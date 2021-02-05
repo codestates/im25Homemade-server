@@ -1,4 +1,4 @@
-const { users } = require('../../models'); //! 수정필요.
+const { user } = require('../../models'); //! 수정필요.
 const {
   generateAccessToken,
   generateRefreshToken,
@@ -13,7 +13,7 @@ module.exports = {
   //TODO: 로그인 로직 작성
   post: async (req, res) => {
     // console.log(req);
-    const userInfo = await users.findOne({
+    const userInfo = await user.findOne({
       where: { email: req.body.email, password: req.body.password },
     });
 
