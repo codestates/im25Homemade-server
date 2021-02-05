@@ -22,7 +22,6 @@ module.exports = {
       req.session.save(function () {
         //! session 에 userId 를 담아준다.
         req.session.userId = userInfo.userId;
-        console.log('hello');
         console.log(req.session);
         res.json({ data: userInfo, message: 'ok' });
       });

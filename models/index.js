@@ -54,7 +54,7 @@ content.hasMany(image);
 image.belongsTo(content);
 user.hasMany(content);
 content.belongsTo(user);
-user.belongsToMany(label, { through: user_label });
-label.belongsToMany(user, { through: user_label });
+// user.belongsToMany(label, { through: user_label });
+// label.belongsToMany(user, { through: user_label });
 
 module.exports = db;
