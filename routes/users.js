@@ -7,7 +7,7 @@ const { usersController } = require('../controllers');
 router.get('/userinfo', usersController.userinfo.get);
 
 // * GET /users/myrecipes 유저 레시피들 요청
-router.get('/myrecipes', usersController.userinfo.get);
+router.get('/myrecipes', usersController.myrecipes.get);
 
 // * POST /users/signin 유저 로그인
 router.post('/signin', usersController.signin.post);

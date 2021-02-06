@@ -5,7 +5,7 @@ const path = require('path');
 const Sequelize = require('sequelize');
 const basename = path.basename(__filename);
 const env = process.env.NODE_ENV || 'development';
-const config = require(__dirname + '/../config/config.json')[env];
+const config = require(__dirname + '/../config/config.js')[env];
 const db = {};
 
 let sequelize;
@@ -54,7 +54,5 @@ content.hasMany(image);
 image.belongsTo(content);
 user.hasMany(content);
 content.belongsTo(user);
-user.belongsToMany(label, { through: user_label });
-label.belongsToMany(user, { through: user_label });
 
 module.exports = db;
