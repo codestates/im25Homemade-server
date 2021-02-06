@@ -49,7 +49,7 @@ comment.belongsTo(content);
 user.hasMany(comment);
 content.hasMany(comment);
 categorie.hasMany(content);
-content.belongsTo(categorie);
+// content.belongsTo(categorie, {foreignKey:'categoryId'});
 content.hasMany(image);
 image.belongsTo(content);
 user.hasMany(content);

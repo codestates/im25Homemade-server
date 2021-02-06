@@ -10,6 +10,7 @@ module.exports = {
       // TODO: 로그아웃 요청에 토큰 삭제가 필요?
       const { email } = accessTokenData;
       const userInfo = user.findOne({ where: { email } });
+      //?
       if (!userInfo) {
         return res.send('access token has been tempered');
       }

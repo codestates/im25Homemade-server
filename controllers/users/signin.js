@@ -26,9 +26,10 @@ module.exports = {
       const accessToken = generateAccessToken(userInfo.dataValues);
       const refreshToken = generateRefreshToken(userInfo.dataValues);
 
-      sendAccessToken(res, accessToken);
       sendRefreshToken(res, refreshToken);
+      sendAccessToken(res, accessToken);
+      return;
     }
-    req.status(500).send(err);
+    res.sendStatus(500).send('err');
   },
 };

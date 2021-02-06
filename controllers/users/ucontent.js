@@ -2,6 +2,7 @@ const { content } = require('../../models');
 module.exports = {
   post: async (req, res) => {
     //TODO: 글내용 업데이트 로직 작성
+    console.log('hello');
     const accessTokenData = isAuthorized(req);
     if (!accessTokenData) {
       res.status(401).send('invalid token');

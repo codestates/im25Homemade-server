@@ -8,4 +8,5 @@ module.exports = {
   uuserinfo: require('./uuserinfo'),
   duser: require('./duser'),
   socialsignin: require('./socialsignin'),
+  myrecipes: require('./myrecipes'),
 };
