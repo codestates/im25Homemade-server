@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 
-const { recipesController } = require('../controller');
+const { recipesController } = require('../controllers');
 
 // * GET /recipes/recipes 모든 레시피
 router.get('/recipes', recipesController.recipes.get);
