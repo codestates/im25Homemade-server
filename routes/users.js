@@ -22,7 +22,7 @@ router.post('/signout', usersController.signout.post);
 router.post('/signup', usersController.signup.post);
 
 // * POST /users/ucontent 유저 글 업데이트
-router.post('/ucontent', usersController.ucontent.post);
+router.patch('/ucontent', usersController.ucontent.patch);
 
 // * POST /users/uuserinfo 유저 정보 업데이트
 router.post('/uuserinfo', usersController.uuserinfo.post);
