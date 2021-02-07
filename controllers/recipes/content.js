@@ -30,7 +30,8 @@ module.exports = {
       });
     } else if (!accessTokenData) {
       res.status(401).send('invalid token');
+    } else {
+      res.status(500).send('err');
     }
-    res.status(500).send(err);
   },
 };
