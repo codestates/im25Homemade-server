@@ -1,26 +1,17 @@
 const { comment } = require('../../models');
 const { isAuthorized } = require('../tokenFunctions');
+
 module.exports = {
-  post: async (req, res) => {
-    //TODO: 레시피 댓글 작성 요청 로직 작성
+  delete: async (req, res) => {
     const accessTokenData = isAuthorized(req);
-
+    //TODO: 레시피 댓글 삭제 요청 로직 작성
     if (accessTokenData) {
-      const tokencode = req.headers.authorization.split(' ')[1];
-      const token = await jwt.verify(tokencode, process.env.ACCESS_SECERET);
-
-      const createNewComment = await comment.create({
-        text: req.body.text,
-        userId: token.id,
-        contentId: req.body.contentId,
-      });
-      res.send(201).send({
-        data: { commentInfo: createNewComment.dataValues },
-        message: 'ok',
+      await comment.destroy({
+        where: { id: req.body.id },
       });
     } else if (!accessTokenData) {
       res.status(401).send('invalid token');
     }
-    res.status(500).send(err);
+    res.send(err);
   },
 };
