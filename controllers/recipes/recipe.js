@@ -13,7 +13,7 @@ module.exports = {
     });
 
     const category = await category.findOne({
-      where: { id: category.id },
+      where: { id: recipe.dataValues.categoryId },
     });
 
     if (!recipe) {
