@@ -29,8 +29,6 @@ module.exports = {
     try {
       return verify(token, process.env.ACCESS_SECRET);
     } catch (err) {
-      // return null if invalid token
-      console.log('this is invalid token!');
       return null;
     }
   },

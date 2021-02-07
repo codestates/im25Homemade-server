@@ -24,11 +24,11 @@ router.post('/signup', usersController.signup.post);
 // * POST /users/ucontent 유저 글 업데이트
 router.post('/ucontent', usersController.ucontent.post);
 
-// * POST /users/uuserinfo 유저 정보 업데이트
-router.post('/uuserinfo', usersController.uuserinfo.post);
+// * PATCH /users/uuserinfo 유저 정보 업데이트
+router.patch('/uuserinfo', usersController.uuserinfo.patch);
 
-// * POST /users/ucomment 유저 댓글 업데이트
-router.post('/ucomment', usersController.ucomment.post);
+// * PATCH /users/ucomment 유저 댓글 업데이트
+router.patch('/ucomment', usersController.ucomment.patch);
 
 // * POST /users/duser 유저 탈퇴 요청
 router.post('/duser', usersController.duser.post);
