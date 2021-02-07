@@ -14,10 +14,10 @@ module.exports = (sequelize, DataTypes) => {
   category.init(
     {
       name: DataTypes.STRING,
-      contentId: DataTypes.INTEGER,
     },
     {
       sequelize,
+      timestamps: true,
       modelName: 'category',
     },
   );

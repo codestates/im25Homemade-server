@@ -7,7 +7,7 @@ const { recipesController } = require('../controllers');
 router.get('/recipes:searchWord', recipesController.recipes.get);
 
 // * GET /recipes/recipe/id 레시피 상세정보
-router.get('/recipe', recipesController.recipe.get);
+router.get('/recipe/:id', recipesController.recipe.get);
 
 // * POST /recipes/content 레시피 글작성
 router.post('/content', recipesController.content.post);
