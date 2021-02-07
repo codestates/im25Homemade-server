@@ -34,6 +34,6 @@ router.patch('/uuserinfo', usersController.uuserinfo.patch);
 router.patch('/ucomment', usersController.ucomment.patch);
 
 // * POST /users/duser 유저 탈퇴 요청
-router.post('/duser', usersController.duser.post);
+router.delete('/duser', usersController.duser.delete);
 
 module.exports = router;
