@@ -1,4 +1,4 @@
-const { user, content, image, categorie } = require('../../models');
+const { user, content, image, category } = require('../../models');
 const jwt = require('jsonwebtoken');
 module.exports = {
   delete: async (req, res) => {
@@ -7,6 +7,9 @@ module.exports = {
       const tokencode = req.headers.authorization.split(' ')[1];
       const token = await jwt.verify(tokencode, process.env.ACCESS_SECERET);
 
+      await user_label.destroy({
+        where: { userId: token.id },
+      });
       await user.destroy({
         where: { id: token.id },
       });
@@ -19,7 +22,7 @@ module.exports = {
         where: { id: contentInfo.dataValues.id },
       });
 
-      await categorie.destroy({
+      await category.destroy({
         where: { id: contentInfo.dataValues.categoryId },
       });
 
