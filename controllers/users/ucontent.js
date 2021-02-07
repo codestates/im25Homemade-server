@@ -5,52 +5,53 @@ const { isAuthorized } = require('../tokenFunctions');
 module.exports = {
   patch: async (req, res) => {
     //TODO: 글내용 업데이트 로직 작성
-    console.log('here is ucontent!!!');
     const accessTokenData = isAuthorized(req);
     if (!accessTokenData) {
       res.status(404).send('invalid user');
     } else if (accessTokenData) {
-      const { contentId, imageurl, title, contents, Thumbnail } = req.body;
-      //! 이미지를 제외한 정보의 업데이트 => 완료
-      const isContentUpdated = await content.update(
+      const { contentId, imageurl, title, contents, thumbnailurl } = req.body;
+
+      const isUpdated = await content.update(
         {
           title: title,
           content: contents,
-          thumbnail_url: Thumbnail,
+          thumbnail_url: thumbnailurl,
           updatedAt: new Date(),
         },
         {
           where: { id: contentId },
-          returning: true,
-          plain: true,
         },
       );
-      //! 이미지 업데이트 부분
-      const imageIds = await image.findAll({ where: { contentId: contentId } });
+      const isImageUpdated = await image.update(
+        {
+          image_url: imageurl,
+        },
+        {
+          where: {
+            contentId: contentId, //! returning, plain 필요없음 => 다른 업데이트 로직 변경할 것.
+          },
+        },
+      );
 
-      let imageArr = [];
-
-      for (let i = 0; i < imageIds.length; i++) {
-        imageArr.push(imageIds[i].id);
+      if (!isUpdated || !isImageUpdated) {
+        throw 'Error while Updating';
       }
+      const returnedUpdatedContent = await content.findOne({
+        where: { id: contentId },
+      });
+      const returnedUpdatedImage = await image.findOne({
+        where: { contentId: contentId },
+      });
 
-      console.log(imageArr);
-
-      for (let i = 0; i < imageArr.length; i++) {
-        const updateImg = await image.update();
-      }
-
-      //   if (!isContentUpdated) {
-      //     throw 'Error while Updating';
-      //   }
-      //   const returnedUpdatedComment = await comment.findOne({
-      //     where: { id: commentId },
-      //   });
-      //   res
-      //     .status(200)
-      //     .json({ data: { commentInfo: returnedUpdatedComment.dataValues } });
-      // } else {
-      //   res.status(500).send('err');
+      return res.status(200).json({
+        data: {
+          contentInfo: returnedUpdatedContent.dataValues,
+          imageInfo: returnedUpdatedImage,
+        },
+        message: 'ok',
+      });
+    } else {
+      res.status(500).send('err');
     }
   },
 };

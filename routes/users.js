@@ -21,7 +21,7 @@ router.post('/signout', usersController.signout.post);
 // * POST /users/signup 유저 회원가입
 router.post('/signup', usersController.signup.post);
 
-// * POST /users/ucontent 유저 글 업데이트
+// * PATCH /users/ucontent 유저 글 업데이트
 router.patch('/ucontent', usersController.ucontent.patch);
 
 // * POST /users/uuserinfo 유저 정보 업데이트
@@ -34,6 +34,3 @@ router.post('/ucomment', usersController.ucomment.post);
 router.post('/duser', usersController.duser.post);
 
 module.exports = router;
-
-// app.use('/users', usersRouter);
-// app.use('/recipes', recipesRouter);
