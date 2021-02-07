@@ -6,12 +6,9 @@ module.exports = {
     const accessTokenData = isAuthorized(req);
 
     if (accessTokenData) {
-      const tokencode = req.headers.authorization.split(' ')[1];
-      const token = await jwt.verify(tokencode, process.env.ACCESS_SECERET);
-
       const createNewComment = await comment.create({
         text: req.body.text,
-        userId: token.id,
+        userId: accessTokenData.id,
         contentId: req.body.contentId,
       });
       res.send(201).send({
@@ -20,7 +17,8 @@ module.exports = {
       });
     } else if (!accessTokenData) {
       res.status(401).send('invalid token');
+    } else {
+      res.status(500).send(err);
     }
-    res.status(500).send(err);
   },
 };

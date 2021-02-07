@@ -2,13 +2,13 @@ const { content, image, category } = require('../../models');
 module.exports = {
   get: async (req, res) => {
     // 레시피 목록에서 한개 클릭 시 보이는 로직
-
+    console.log(req.params);
     const recipe = await content.findOne({
-      where: { id: req.body.id },
+      where: { id: req.params.id },
     });
-
+    console.log(recipe);
     const image = await image.findOne({
-      where: { contentId: req.body.id },
+      where: { contentId: req.params.id },
       attributes: ['image_url', 'order'],
     });
 
@@ -17,9 +17,9 @@ module.exports = {
     });
 
     if (!recipe) {
-      res.status(400).send('Bad Request');
+      return res.status(400).send('Bad Request');
     } else if (recipe) {
-      res.status(200).send({
+      return res.status(200).send({
         data: {
           recipe: {
             ...category.dataValues,
@@ -30,6 +30,6 @@ module.exports = {
       });
     }
 
-    res.status(500).send('err');
+    return res.status(500).send('err');
   },
 };
