@@ -4,7 +4,7 @@ var router = express.Router();
 const { recipesController } = require('../controllers');
 
 // * GET /recipes/recipes 모든 레시피
-router.get('/recipes', recipesController.recipes.get);
+router.get('/recipes:searchWord', recipesController.recipes.get);
 
 // * GET /recipes/recipe/id 레시피 상세정보
 router.get('/recipe', recipesController.recipe.get);
@@ -13,13 +13,13 @@ router.get('/recipe', recipesController.recipe.get);
 router.post('/content', recipesController.content.post);
 
 // * POST /recipes/dcontent 레시피 글 삭제
-router.post('/dcontent', recipesController.dcontent.post);
+router.delete('/dcontent', recipesController.dcontent.delete);
 
 // * POST /recipes/comment 레시피 댓글 작성
 router.post('/comment', recipesController.comment.post);
 
 // * POST /recipes/dcomment 레시피 댓글 삭제
-router.post('/dcomment', recipesController.dcomment.post);
+router.delete('/dcomment', recipesController.dcomment.delete);
 
 module.exports = router;
 
