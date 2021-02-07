@@ -25,7 +25,7 @@ router.post('/signup', usersController.signup.post);
 router.post('/ucontent', usersController.ucontent.post);
 
 // * POST /users/uuserinfo 유저 정보 업데이트
-router.post('/uuserinfo', usersController.uuserinfo.post);
+router.patch('/uuserinfo', usersController.uuserinfo.patch);
 
 // * POST /users/ucomment 유저 댓글 업데이트
 router.post('/ucomment', usersController.ucomment.post);
