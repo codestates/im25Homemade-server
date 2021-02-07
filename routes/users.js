@@ -9,6 +9,9 @@ router.get('/userinfo', usersController.userinfo.get);
 // * GET /users/myrecipes 유저 레시피들 요청
 router.get('/myrecipes', usersController.myrecipes.get);
 
+// * GET /users/refreshtokenrequest accesstoken 재발행 요청
+router.get('/refreshtokenrequest', usersController.refreshtokenrequest.get);
+
 // * POST /users/signin 유저 로그인
 router.post('/signin', usersController.signin.post);
 
@@ -25,15 +28,12 @@ router.post('/signup', usersController.signup.post);
 router.post('/ucontent', usersController.ucontent.post);
 
 // * POST /users/uuserinfo 유저 정보 업데이트
-router.post('/uuserinfo', usersController.uuserinfo.post);
+router.patch('/uuserinfo', usersController.uuserinfo.patch);
 
-// * POST /users/ucomment 유저 댓글 업데이트
-router.post('/ucomment', usersController.ucomment.post);
+// * PATCH /users/ucomment 유저 댓글 업데이트
+router.patch('/ucomment', usersController.ucomment.patch);
 
 // * POST /users/duser 유저 탈퇴 요청
 router.post('/duser', usersController.duser.post);
 
 module.exports = router;
-
-// app.use('/users', usersRouter);
-// app.use('/recipes', recipesRouter);
