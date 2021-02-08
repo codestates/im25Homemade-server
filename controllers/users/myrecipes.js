@@ -3,6 +3,7 @@ const { isAuthorized } = require('../tokenFunctions');
 
 module.exports = {
   get: async (req, res) => {
+    console.log(req.params);
     //TODO: 유저정보 get 요청 로직 작성
     const accessTokenData = isAuthorized(req);
     if (!accessTokenData) {
