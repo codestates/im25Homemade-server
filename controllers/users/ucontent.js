@@ -45,8 +45,10 @@ module.exports = {
 
       return res.status(200).json({
         data: {
-          contentInfo: returnedUpdatedContent.dataValues,
-          imageInfo: returnedUpdatedImage,
+          contentInfo: {
+            ...returnedUpdatedContent.dataValues,
+            image_url: returnedUpdatedImage.image_url,
+          },
         },
         message: 'ok',
       });
