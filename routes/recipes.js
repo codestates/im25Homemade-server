@@ -4,7 +4,7 @@ var router = express.Router();
 const { recipesController } = require('../controllers');
 
 // * GET /recipes/recipes 모든 레시피
-router.get('/recipes:searchWord', recipesController.recipes.get);
+router.get('/recipes', recipesController.recipes.get);
 
 // * GET /recipes/recipe/id 레시피 상세정보
 router.get('/recipe/:id', recipesController.recipe.get);
