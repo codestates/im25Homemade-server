@@ -5,5 +5,4 @@ module.exports = {
   dcontent: require('./dcontent'),
   comment: require('./comment'),
   dcomment: require('./dcomment'),
-  image: require('./image'),
 };

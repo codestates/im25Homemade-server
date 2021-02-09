@@ -1,18 +1,15 @@
-const { content, image, sequelize, user } = require('../../models');
+const { content, image } = require('../../models');
 const { isAuthorized } = require('../tokenFunctions');
-const multer = require('multer');
-const path = require('path');
-const fs = require('fs');
-const AWS = require('aws-sdk');
-const multerS3 = require('multer-s3');
+const { refreshToken } = require('../tokenFunctions/refreshtokenrequest');
 
 module.exports = {
   post: async (req, res) => {
     //TODO: 레시피 글작성 요청 로직 작성
 
     const accessTokenData = isAuthorized(req);
-
-    if (accessTokenData) {
+    if (!accessTokenData) {
+      refreshToken(req, res);
+    } else {
       const newContent = await content.create({
         title: req.body.title,
         content: req.body.content,
@@ -30,14 +27,18 @@ module.exports = {
         contentId: newContent.dataValues.id,
       });
 
-      res.status(201).send({
-        data: { userInfo: newContent.dataValues },
+      if (!newContent) {
+        return res.status(401).send('access token has been tempered');
+      }
+
+      return res.status(201).send({
+        data: {
+          id: newContent.id,
+          message: 'created new content successfully',
+        },
         message: 'ok',
       });
-    } else if (!accessTokenData) {
-      res.status(401).send('invalid token');
-    } else {
-      res.status(500).send('err');
     }
+    res.status(500).send('err');
   },
 };
