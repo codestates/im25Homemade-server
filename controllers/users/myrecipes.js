@@ -2,6 +2,7 @@ const { content } = require('../../models');
 const { isAuthorized } = require('../tokenFunctions');
 const { refreshToken } = require('../tokenFunctions/refreshtokenrequest');
 
+
 module.exports = {
   get: async (req, res) => {
     //TODO: 유저정보 get 요청 로직 작성

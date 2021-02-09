@@ -13,7 +13,6 @@ module.exports = {
       const { contentId, imageurl, title, contents, thumbnailurl } = req.body;
 
       //! contentInfo 를 배열로 담아서 유저에게 전달. 고민 필요.
-
       const isUpdated = await content.update(
         {
           title: title,
@@ -48,8 +47,10 @@ module.exports = {
 
       return res.status(200).json({
         data: {
-          contentInfo: returnedUpdatedContent.dataValues,
-          imageInfo: returnedUpdatedImage,
+          contentInfo: {
+            ...returnedUpdatedContent.dataValues,
+            image_url: returnedUpdatedImage.image_url,
+          },
         },
         message: 'ok',
       });

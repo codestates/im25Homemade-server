@@ -43,16 +43,4 @@ Object.keys(db).forEach(modelName => {
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
-const { categorie, comment, content, image, label, user } = sequelize.models;
-comment.belongsTo(user);
-comment.belongsTo(content);
-user.hasMany(comment);
-content.hasMany(comment);
-categorie.hasMany(content);
-// content.belongsTo(categorie, {foreignKey:'categoryId'});
-content.hasMany(image);
-image.belongsTo(content);
-user.hasMany(content);
-content.belongsTo(user);
-
 module.exports = db;

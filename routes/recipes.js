@@ -7,19 +7,19 @@ const { recipesController } = require('../controllers');
 router.get('/recipes', recipesController.recipes.get);
 
 // * GET /recipes/recipe/id 레시피 상세정보
-router.get('/recipe', recipesController.recipe.get);
+router.get('/recipe/:id', recipesController.recipe.get);
 
 // * POST /recipes/content 레시피 글작성
 router.post('/content', recipesController.content.post);
 
 // * POST /recipes/dcontent 레시피 글 삭제
-router.post('/dcontent', recipesController.dcontent.post);
+router.delete('/dcontent', recipesController.dcontent.delete);
 
 // * POST /recipes/comment 레시피 댓글 작성
 router.post('/comment', recipesController.comment.post);
 
 // * POST /recipes/dcomment 레시피 댓글 삭제
-router.post('/dcomment', recipesController.dcomment.post);
+router.delete('/dcomment', recipesController.dcomment.delete);
 
 module.exports = router;
 

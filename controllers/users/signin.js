@@ -1,4 +1,5 @@
-const { user } = require('../../models'); //! 수정필요.
+const { user } = require('../../models');
+
 const {
   generateAccessToken,
   generateRefreshToken,
@@ -15,16 +16,17 @@ module.exports = {
 
     if (!userInfo) {
       res.status(400).send('not authorized');
-    } else {
-      //userInfo 가 존재할 경우 accessToken 부여.
+    } else if (userInfo) {
+      //userInfo 가 존재할 경우 accessToken 부여
       delete userInfo.dataValues.password;
       const accessToken = generateAccessToken(userInfo.dataValues);
       const refreshToken = generateRefreshToken(userInfo.dataValues);
 
+      //순서 중요. ERR_HTTP_HEADERS_SENT 에러 발생.
       sendRefreshToken(res, refreshToken);
       sendAccessToken(res, accessToken);
-      return;
+    } else {
+      return res.status(500).send('err');
     }
-    res.sendStatus(500).send('err');
   },
 };

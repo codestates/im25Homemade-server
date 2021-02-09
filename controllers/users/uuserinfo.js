@@ -2,6 +2,7 @@ const { user } = require('../../models');
 const { isAuthorized } = require('../tokenFunctions');
 const { refreshToken } = require('../tokenFunctions/refreshtokenrequest');
 
+
 module.exports = {
   patch: async (req, res) => {
     //TODO: 유저정보 업데이트 로직 작성
@@ -33,9 +34,10 @@ module.exports = {
         where: { id: accessTokenData.id },
       });
       delete returnedUpdatedUserinfo.dataValues.password;
-      res
-        .status(200)
-        .json({ data: { userInfo: returnedUpdatedUserinfo.dataValues } });
+      res.status(200).json({
+        data: { userInfo: returnedUpdatedUserinfo.dataValues },
+        message: 'ok',
+      });
     } else {
       res.status(500).send('err');
     }

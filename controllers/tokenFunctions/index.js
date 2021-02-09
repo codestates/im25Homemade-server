@@ -27,6 +27,7 @@ module.exports = {
     if (!authorization) {
       return null;
     }
+    console.log(authorization);
     const token = authorization.split(' ')[1];
     try {
       return verify(token, process.env.ACCESS_SECRET);
