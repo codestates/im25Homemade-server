@@ -4,7 +4,6 @@ module.exports = {
     // TODO : 회원가입 로직 및 유저 생성 로직 작성
 
     const { email, name, password, nickname, mobile } = req.body;
-
     user
       .findOrCreate({
         where: {

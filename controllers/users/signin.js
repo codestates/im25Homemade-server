@@ -1,4 +1,5 @@
 const { user } = require('../../models');
+
 const {
   generateAccessToken,
   generateRefreshToken,
@@ -20,6 +21,7 @@ module.exports = {
       delete userInfo.dataValues.password;
       const accessToken = generateAccessToken(userInfo.dataValues);
       const refreshToken = generateRefreshToken(userInfo.dataValues);
+
       //순서 중요. ERR_HTTP_HEADERS_SENT 에러 발생.
       sendRefreshToken(res, refreshToken);
       sendAccessToken(res, accessToken);
