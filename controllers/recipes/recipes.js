@@ -37,16 +37,10 @@ module.exports = {
         item => (item.dataValues.categoryName = categoryValue.dataValues.name),
       );
 
-      //총 필요한 페이지 갯수
-      let allPages = Math.round(allContent.count / 20);
-      if (allPages < 1) {
-        allPages = 1;
-      }
-
       return res.status(200).send({
         data: {
           recipes: [allContent.rows],
-          allPages: allPages,
+          contentSum: allContent.count,
         },
       });
       //case2. 검색어에 따른 데이터 get
@@ -73,7 +67,6 @@ module.exports = {
       });
 
       if (searchResults.count === 0) {
-        console.log('hihi');
         return res.status(204);
       }
 
@@ -87,16 +80,11 @@ module.exports = {
         item.dataValues.categoryName = categoryValue.dataValues.name;
         delete item.dataValues.categoryId;
       });
-      //총 필요한 페이지 갯수
-      let allPages = Math.round(searchResults.count / 20);
-      if (allPages < 1) {
-        allPages = 1;
-      }
 
       return res.status(200).send({
         data: {
           recipes: [searchResults.rows],
-          allPages: allPages,
+          contentSum: searchResults.count,
         },
       });
     }
