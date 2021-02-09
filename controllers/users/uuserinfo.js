@@ -1,7 +1,8 @@
 const { user } = require('../../models');
 const { isAuthorized } = require('../tokenFunctions');
 const { refreshToken } = require('../tokenFunctions/refreshtokenrequest');
-
+const crypto = require('crypto');
+require('dotenv').config;
 
 module.exports = {
   patch: async (req, res) => {
@@ -13,10 +14,14 @@ module.exports = {
     } else if (accessTokenData) {
       const { password, nickname, mobile, avatar } = req.body;
 
+      const encrypted = crypto
+        .pbkdf2Sync(password, process.env.DATABASE_SALT, 100000, 64, 'sha512')
+        .toString('base64');
+
       const isUpdated = await user.update(
         {
           nickname: nickname,
-          password: password,
+          password: encrypted,
           mobile: mobile,
           avatar_url: avatar,
           updatedAt: new Date(),
