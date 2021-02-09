@@ -33,6 +33,9 @@ router.patch('/uuserinfo', usersController.uuserinfo.patch);
 // * PATCH /users/ucomment 유저 댓글 업데이트
 router.patch('/ucomment', usersController.ucomment.patch);
 
+// * PATCH /users/upassword 유저 비밀번호 업데이트
+router.patch('/upassword', usersController.upassword.patch);
+
 // * POST /users/duser 유저 탈퇴 요청
 router.delete('/duser', usersController.duser.delete);
 
