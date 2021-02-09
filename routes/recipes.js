@@ -1,6 +1,5 @@
 var express = require('express');
 var router = express.Router();
-const uploader = require('../controllers/recipes/image');
 
 const { recipesController } = require('../controllers');
 
