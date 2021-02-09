@@ -1,5 +1,11 @@
-const { content, image, sequelize } = require('../../models');
+const { content, image, sequelize, user } = require('../../models');
 const { isAuthorized } = require('../tokenFunctions');
+const multer = require('multer');
+const path = require('path');
+const fs = require('fs');
+const AWS = require('aws-sdk');
+const multerS3 = require('multer-s3');
+
 module.exports = {
   post: async (req, res) => {
     //TODO: 레시피 글작성 요청 로직 작성
@@ -16,10 +22,10 @@ module.exports = {
         userId: accessTokenData.id,
         categoryId: req.body.categoryId,
       });
-      // multer 코드 미구현되어 아직 이미지 업로드 불가
+
       await image.create({
         name: '임시',
-        image_url: '임시',
+        image_url: req.body.imageUrl,
         order: 0,
         contentId: newContent.dataValues.id,
       });
