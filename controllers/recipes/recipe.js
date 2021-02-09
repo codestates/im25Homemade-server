@@ -2,10 +2,14 @@ const { content, image, category, user, comment } = require('../../models');
 module.exports = {
   get: async (req, res) => {
     // 레시피 목록에서 한개 클릭 시 보이는 로직
-
+    console.log(req.params);
     const recipe = await content.findOne({
       where: { id: req.params.id },
     });
+
+    if (!recipe) {
+      return res.status(400).send('Bad Request');
+    }
     delete recipe.dataValues.updatedAt;
 
     const images = await image.findAll({
@@ -29,9 +33,7 @@ module.exports = {
       attributes: ['text'],
     });
 
-    if (!recipe) {
-      return res.status(400).send('Bad Request');
-    } else if (recipe) {
+    if (recipe) {
       return res.status(200).send({
         data: {
           recipe: {
