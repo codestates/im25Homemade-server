@@ -8,7 +8,6 @@ module.exports = {
   generateRefreshToken: data => {
     return sign(data, process.env.REFRESH_SECRET, { expiresIn: '30d' });
   },
-  //? 이것도 보내주어야 하는가?
   sendRefreshToken: (res, refreshToken) => {
     res.cookie('refreshToken', refreshToken, {
       httpOnly: true,
@@ -18,7 +17,10 @@ module.exports = {
     res.json({ data: { accessToken: accessToken }, message: 'ok' });
   },
   resendAccessToken: (res, accessToken, data) => {
-    res.json({ data: { accessToken, userInfo: data }, message: 'ok' });
+    res.status(202).json({
+      data: { accessToken, userInfo: data },
+      message: 'New AccessToken, please restore and request again',
+    });
   },
   isAuthorized: req => {
     const authorization = req.headers['authorization'];
@@ -30,7 +32,6 @@ module.exports = {
     try {
       return verify(token, process.env.ACCESS_SECRET);
     } catch (err) {
-      // return null if invalid token
       return null;
     }
   },

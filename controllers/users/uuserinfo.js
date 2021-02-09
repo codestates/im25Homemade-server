@@ -1,5 +1,7 @@
 const { user } = require('../../models');
 const { isAuthorized } = require('../tokenFunctions');
+const { refreshToken } = require('../tokenFunctions/refreshtokenrequest');
+
 
 module.exports = {
   patch: async (req, res) => {
@@ -7,7 +9,7 @@ module.exports = {
 
     const accessTokenData = isAuthorized(req);
     if (!accessTokenData) {
-      res.status(404).send('invalid user');
+      refreshToken(req, res);
     } else if (accessTokenData) {
       const { password, nickname, mobile, avatar } = req.body;
 

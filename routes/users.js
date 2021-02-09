@@ -9,9 +9,6 @@ router.get('/userinfo', usersController.userinfo.get);
 // * GET /users/myrecipes 유저 레시피들 요청
 router.get('/myrecipes', usersController.myrecipes.get);
 
-// * GET /users/refreshtokenrequest accesstoken 재발행 요청
-router.get('/refreshtokenrequest', usersController.refreshtokenrequest.get);
-
 // * POST /users/signin 유저 로그인
 router.post('/signin', usersController.signin.post);
 
@@ -27,7 +24,7 @@ router.post('/signup', usersController.signup.post);
 // * PATCH /users/ucontent 유저 글 업데이트
 router.patch('/ucontent', usersController.ucontent.patch);
 
-// * POST /users/uuserinfo 유저 정보 업데이트
+// * PATCH /users/uuserinfo 유저 정보 업데이트
 router.patch('/uuserinfo', usersController.uuserinfo.patch);
 
 // * PATCH /users/ucomment 유저 댓글 업데이트
