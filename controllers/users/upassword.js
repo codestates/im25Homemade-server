@@ -1,10 +1,16 @@
 const { user } = require('../../models');
+const crypto = require('crypto');
+require('dotenv').config;
 
 module.exports = {
   patch: async (req, res) => {
     //TODO: 비밀번호 업데이트 로직 작성
 
     const { name, email, mobile, password } = req.body;
+
+    const encrypted = crypto
+      .pbkdf2Sync(password, process.env.DATABASE_SALT, 100000, 64, 'sha512')
+      .toString('base64');
 
     if (name && email && mobile) {
       const isUser = await user.findOne({
@@ -14,7 +20,6 @@ module.exports = {
           mobile: mobile,
         },
       });
-      console.log(isUser);
       if (!isUser) {
         res.status(400).send('user not found');
       } else {
@@ -23,7 +28,7 @@ module.exports = {
     } else if (email && password) {
       const isUpdated = await user.update(
         {
-          password: password,
+          password: encrypted,
           updatedAt: new Date(),
         },
         {

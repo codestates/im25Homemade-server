@@ -1,6 +1,5 @@
 var express = require('express');
 var router = express.Router();
-const uploader = require('../controllers/recipes/image');
 
 const { recipesController } = require('../controllers');
 
@@ -22,12 +21,4 @@ router.post('/comment', recipesController.comment.post);
 // * POST /recipes/dcomment 레시피 댓글 삭제
 router.delete('/dcomment', recipesController.dcomment.delete);
 
-// * POST /recipes/image 레시피 이미지 업로드
-//router.post('/image', uploader.upload.array('imgs',20),function(req,res){
-// console.log(req.file)
-//});
-
 module.exports = router;
-
-// app.use('/users', usersRouter);
-// app.use('/recipes', recipesRouter);
