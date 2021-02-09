@@ -1,14 +1,14 @@
 const { content } = require('../../models');
 const { image } = require('../../models');
 const { isAuthorized } = require('../tokenFunctions');
+const { refreshToken } = require('../tokenFunctions/refreshtokenrequest');
 
 module.exports = {
   patch: async (req, res) => {
     //TODO: 글내용 업데이트 로직 작성
-    console.log('hello');
     const accessTokenData = isAuthorized(req);
     if (!accessTokenData) {
-      res.status(401).send('invalid token');
+      refreshToken(req, res);
     } else if (accessTokenData) {
       const { contentId, imageurl, title, contents, thumbnailurl } = req.body;
 

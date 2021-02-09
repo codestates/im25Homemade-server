@@ -2,25 +2,21 @@ const {
   checkRefeshToken,
   generateAccessToken,
   resendAccessToken,
-} = require('../tokenFunctions');
+} = require('.');
 const { user } = require('../../models');
 
 module.exports = {
-  get: (req, res) => {
+  refreshToken: (req, res) => {
     const refreshToken = req.cookies.refreshToken;
-    console.log(refreshToken);
     if (!refreshToken) {
-      // return res.status(403).send("refresh token does not exist, you've never logged in before");
-      return res.json({ data: null, message: 'refresh token not provided' });
+      return res.status(401).send('refresh token not provided');
     }
 
     const refreshTokenData = checkRefeshToken(refreshToken);
-    console.log(refreshTokenData);
     if (!refreshTokenData) {
-      return res.json({
-        data: null,
-        message: 'invalid refresh token, pleaes log in again',
-      });
+      return res
+        .status(202)
+        .send('refresh token is outdated, pleaes log in again');
     }
 
     const { email } = refreshTokenData;
@@ -28,10 +24,7 @@ module.exports = {
       .findOne({ where: { email } })
       .then(data => {
         if (!data) {
-          return res.json({
-            data: null,
-            message: 'refresh token has been tempered',
-          });
+          return res.status(401).send('refresh token has been tempered');
         }
         delete data.dataValues.password;
 

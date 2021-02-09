@@ -1,13 +1,13 @@
 const { content } = require('../../models');
 const { isAuthorized } = require('../tokenFunctions');
+const { refreshToken } = require('../tokenFunctions/refreshtokenrequest');
 
 module.exports = {
   get: async (req, res) => {
-    console.log(req.params);
     //TODO: 유저정보 get 요청 로직 작성
     const accessTokenData = isAuthorized(req);
     if (!accessTokenData) {
-      res.status(401).send('invalid user');
+      refreshToken(req, res);
     } else if (accessTokenData) {
       const { id } = accessTokenData;
       const myrecipes = await content.findAll({
@@ -15,7 +15,7 @@ module.exports = {
         where: { userId: id },
       });
       if (!myrecipes) {
-        res.status(204).send('cannot find recipe');
+        res.status(400).send('cannot find recipe');
       }
       let filteredRecipies = [];
       for (let i = 0; i < myrecipes.length; i++) {

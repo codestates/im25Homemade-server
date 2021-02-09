@@ -1,12 +1,13 @@
 const { comment } = require('../../models');
 const { isAuthorized } = require('../tokenFunctions');
+const { refreshToken } = require('../tokenFunctions/refreshtokenrequest');
 
 module.exports = {
   patch: async (req, res) => {
     //TODO: 댓글 업데이트 로직 작성
     const accessTokenData = isAuthorized(req);
     if (!accessTokenData) {
-      res.status(404).send('invalid user');
+      refreshToken(req, res);
     } else if (accessTokenData) {
       const { text, contentId, commentId } = req.body;
 
