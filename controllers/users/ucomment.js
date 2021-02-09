@@ -30,7 +30,7 @@ module.exports = {
       const returnedNickname = await user.findOne({
         attributes: ['nickname'],
         where: { id: accessTokenData.id },
-      });z
+      });
       const returnedRate = await content.findOne({
         attributes: ['rate'],
         where: { id: contentId },
