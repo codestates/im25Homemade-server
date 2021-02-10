@@ -33,7 +33,7 @@ module.exports = {
           {
             where: {
               contentId: contentId,
-              order: i,
+              order: i + 1,
             },
           },
         );
@@ -49,7 +49,7 @@ module.exports = {
         let images = [];
         for (let i = 0; i < imageUrl.length; i++) {
           let imageurl = await image.findOne({
-            where: { contentId: contentId, order: i },
+            where: { contentId: contentId, order: i + 1 },
             attributes: ['image_url'],
           });
           images.push(imageurl);
