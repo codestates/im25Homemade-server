@@ -31,7 +31,7 @@ module.exports = {
         res.status(201).send('created successfully');
       })
       .catch(err => {
-        res.status(500).send(err);
+        res.status(500).send('err');
       });
   },
 };
