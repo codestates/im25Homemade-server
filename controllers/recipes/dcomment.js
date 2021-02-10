@@ -3,7 +3,7 @@ const { isAuthorized } = require('../tokenFunctions');
 const { refreshToken } = require('../tokenFunctions/refreshtokenrequest');
 module.exports = {
   delete: async (req, res) => {
-    //TODO: 레시피 글 삭제 요청 로직 작성
+    //TODO: 레시피 댓글 삭제 요청 로직 작성
     const accessTokenData = isAuthorized(req);
     if (!accessTokenData) {
       refreshToken(req, res);
@@ -13,7 +13,7 @@ module.exports = {
       });
 
       if (!deletedComment) {
-        return res.status(401).send('access token has been tempered');
+        return res.status(400).send('cannot find comment');
       }
       return res.status(200).send('delete comment successfully');
     }

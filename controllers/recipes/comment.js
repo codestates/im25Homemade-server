@@ -1,6 +1,7 @@
-const { comment, content } = require('../../models');
+const { comment, content, user } = require('../../models');
 const { isAuthorized } = require('../tokenFunctions');
 const { refreshToken } = require('../tokenFunctions/refreshtokenrequest');
+const { randomBytes } = require('crypto');
 module.exports = {
   post: async (req, res) => {
     //TODO: 레시피 댓글 작성 요청 로직 작성
@@ -8,36 +9,68 @@ module.exports = {
 
     if (!accessTokenData) {
       refreshToken(req, res);
-    } else {
-      const createNewComment = await comment.create({
-        text: req.body.text,
-        userId: accessTokenData.id,
-        contentId: req.body.id,
-      });
-
-      if (!createNewComment) {
-        return res.status(401).send('access token has benn tempered');
-      }
+    } else if (accessTokenData) {
+      const createNewComment = await comment
+        .create({
+          text: req.body.text,
+          userId: accessTokenData.id,
+          contentId: req.body.id,
+        })
+        .then(data => {
+          return data.dataValues;
+        });
 
       if (req.body.rate) {
-        const rates = await content.findOne({
-          where: { id: req.body.id },
-          attributes: ['rate'],
-        });
+        const rates = await content
+          .findOne({
+            where: { id: req.body.id },
+            attributes: ['rate'],
+          })
+          .then(data => {
+            return data.dataValues.rate;
+          });
 
         await content.update(
           {
-            rate: rates.dataValues.rate + req.body.rate,
+            rate: rates + req.body.rate,
           },
           {
             where: { id: req.body.id },
           },
         );
       }
+
+      const username = await user
+        .findOne({
+          where: { id: req.body.userId },
+          attributes: ['nickname'],
+        })
+        .then(data => {
+          return data.dataValues.nickname;
+        });
+      const currentTime = await comment
+        .findOne({
+          where: { id: createNewComment.id },
+          attributes: ['createdAt'],
+        })
+        .then(data => {
+          return data.dataValues.createdAt;
+        });
+
       return res.status(201).send({
-        data: { commentInfo: createNewComment.dataValues },
+        data: {
+          commentInfo: {
+            id: createNewComment.id,
+            nickname: username,
+            created_At: currentTime,
+            text: createNewComment.text,
+            rate: req.body.rate,
+          },
+        },
         message: 'ok',
       });
     }
+
+    return res.status(500).send('err');
   },
 };
