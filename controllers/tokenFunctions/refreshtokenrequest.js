@@ -24,7 +24,7 @@ module.exports = {
       .findOne({ where: { email } })
       .then(data => {
         if (!data) {
-          return res.status(401).send('refresh token has been tempered');
+          return res.status(400).send('refresh token has been tempered');
         }
         delete data.dataValues.password;
 

@@ -68,7 +68,6 @@ module.exports = {
       //case2. 검색어에 따른 데이터 get
     } else if (req.query.q && req.query.page) {
       const keyword = req.query.q;
-
       const searchResults = await content.findAndCountAll({
         where: {
           title: {

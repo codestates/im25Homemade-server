@@ -14,11 +14,11 @@ module.exports = {
     });
   },
   sendAccessToken: (res, accessToken) => {
-    res.json({ data: { accessToken: accessToken }, message: 'ok' });
+    res.status(200).json({ data: { accessToken: accessToken }, message: 'ok' });
   },
   resendAccessToken: (res, accessToken, data) => {
-    res.status(202).json({
-      data: { accessToken, userInfo: data },
+    res.status(201).json({
+      data: { accessToken: accessToken, userInfo: data },
       message: 'New AccessToken, please restore and request again',
     });
   },
@@ -27,7 +27,6 @@ module.exports = {
     if (!authorization) {
       return null;
     }
-    console.log(authorization);
     const token = authorization.split(' ')[1];
     try {
       return verify(token, process.env.ACCESS_SECRET);

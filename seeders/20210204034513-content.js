@@ -29,6 +29,17 @@ module.exports = {
           createdAt: '2021-01-30 22:25:10',
           updatedAt: '2021-01-30 22:25:10',
         },
+        {
+          title: '스테이크 맛있게 굽는법',
+          content: '와인과 함께 하는 스테이크',
+          rate: 4,
+          views: 100,
+          thumbnail_url: '스테이크 유알엘',
+          userId: 3,
+          categoryId: 4,
+          createdAt: '2021-01-30 22:25:10',
+          updatedAt: '2021-01-30 22:25:10',
+        },
       ],
       {},
     );
