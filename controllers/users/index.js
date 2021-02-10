@@ -10,4 +10,5 @@ module.exports = {
   duser: require('./duser'),
   socialsignin: require('./socialsignin'),
   myrecipes: require('./myrecipes'),
+  checkemail: require('./checkemail'),
 };
