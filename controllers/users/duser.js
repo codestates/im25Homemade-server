@@ -1,35 +1,30 @@
-const { user, content, image, category } = require('../../models');
-const jwt = require('jsonwebtoken');
+const { user, content, image, category, user_label } = require('../../models');
+const { isAuthorized } = require('../tokenFunctions');
+const { refreshToken } = require('../tokenFunctions/refreshtokenrequest');
+
 module.exports = {
   delete: async (req, res) => {
     //TODO: 유저 회원탈퇴 로직
-    if (req.headers.authorization) {
-      const tokencode = req.headers.authorization.split(' ')[1];
-      const token = await jwt.verify(tokencode, process.env.ACCESS_SECERET);
-
-      await user_label.destroy({
-        where: { userId: token.id },
+    const accessTokenData = isAuthorized(req);
+    if (!accessTokenData) {
+      refreshToken(req, res);
+    } else {
+      const userData = await user.destroy({
+        where: { id: accessTokenData.id },
       });
-      await user.destroy({
-        where: { id: token.id },
-      });
-
+      if (!userData) {
+        return res.status(401).send('access token has been tempered');
+      }
       const contentInfo = await content.destroy({
-        where: { id: req.body.id },
+        where: { userId: accessTokenData.id },
       });
 
       await image.destroy({
         where: { id: contentInfo.dataValues.id },
       });
 
-      await category.destroy({
-        where: { id: contentInfo.dataValues.categoryId },
-      });
-
-      res.status(200).send('delete content successfully');
-    } else if (!req.headers.authorization) {
-      res.status(401).send('invalid token');
+      return res.status(200).send('delete content successfully');
     }
-    res.send(err);
+    return res.status(500).send('err');
   },
 };
