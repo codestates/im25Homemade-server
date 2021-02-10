@@ -1,6 +1,6 @@
 const { user } = require('../../models');
 const crypto = require('crypto');
-require('dotenv').config;
+require('dotenv').config();
 
 module.exports = {
   post: (req, res) => {

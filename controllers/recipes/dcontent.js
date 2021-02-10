@@ -17,10 +17,6 @@ module.exports = {
         where: { contentId: contentInfo.dataValues.id },
       });
 
-      await category.destroy({
-        where: { id: contentInfo.dataValues.categoryId },
-      });
-
       if (!contentInfo) {
         return res.status(401).send('invalid token');
       }

@@ -9,20 +9,32 @@ module.exports = {
     if (!accessTokenData) {
       refreshToken(req, res);
     } else {
-      const userData = await user.destroy({
-        where: { id: accessTokenData.id },
+      const userId = accessTokenData.id;
+      const contentInfo = await content.findOne({
+        where: { userId: userId },
       });
+      console.log(contentInfo);
+      if (!contentInfo) {
+        return res.status(400).send('cannot find content');
+      }
+      try {
+        await content.destroy({
+          where: { userId: userId },
+        });
+
+        await image.destroy({
+          where: { contentid: contentInfo.dataValues.id },
+        });
+
+        await user.destroy({
+          where: { id: userId },
+        });
+      } catch (err) {
+        return res.status(400).send(err);
+      }
       if (!userData) {
         return res.status(401).send('access token has been tempered');
       }
-      const contentInfo = await content.destroy({
-        where: { userId: accessTokenData.id },
-      });
-
-      await image.destroy({
-        where: { id: contentInfo.dataValues.id },
-      });
-
       return res.status(200).send('delete content successfully');
     }
     return res.status(500).send('err');
