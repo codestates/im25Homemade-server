@@ -10,14 +10,14 @@ module.exports = {
     if (!accessTokenData) {
       refreshToken(req, res);
     } else if (accessTokenData) {
-      const { contentId, imageurl, title, contents, thumbnailurl } = req.body;
+      const { contentId, imageUrl, title, contents, thumbnailUrl } = req.body;
 
       //! contentInfo 를 배열로 담아서 유저에게 전달. 고민 필요.
       const isUpdated = await content.update(
         {
           title: title,
           content: contents,
-          thumbnail_url: thumbnailurl,
+          thumbnail_url: thumbnailUrl,
           updatedAt: new Date(),
         },
         {
@@ -26,7 +26,7 @@ module.exports = {
       );
       const isImageUpdated = await image.update(
         {
-          image_url: imageurl,
+          image_url: imageUrl,
         },
         {
           where: {
