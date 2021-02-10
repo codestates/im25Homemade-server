@@ -46,7 +46,6 @@ app.use(
   }),
 );
 
-
 sequelize
   .sync({ force: false })
   .then(() => console.log('데이터베이스 연결 성공'))
@@ -101,7 +100,6 @@ app.post('/image', upload.array('imgs', 20), function (req, res) {
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-
 
 app.use(cookieParser());
 app.use('/users', usersRouter);
