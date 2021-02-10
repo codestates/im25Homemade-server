@@ -20,8 +20,6 @@ module.exports = {
     const categorys = await category.findOne({
       where: { id: recipe.dataValues.categoryId },
     });
-    delete categorys.dataValues.updatedAt;
-    delete categorys.dataValues.createdAt;
 
     const users = await user.findOne({
       where: { id: recipe.dataValues.userId },
@@ -39,12 +37,13 @@ module.exports = {
           recipe: {
             id: recipe.dataValues.id,
             username: users.dataValues.nickname,
-            title: recipe.dataValues.content,
+            title: recipe.dataValues.title,
+            content: recipe.updatedAt.content,
             thumbnail_url: recipe.dataValues.thumbnail_url,
             image_urls: images,
             comments: comments,
             create_at: recipe.dataValues.createdAt,
-            rate: recipe.dataValues.rete,
+            rate: recipe.dataValues.rate,
             views: recipe.dataValues.views,
             categoryName: categorys.name,
           },

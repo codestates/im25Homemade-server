@@ -15,17 +15,21 @@ module.exports = {
         content: req.body.content,
         rate: 0,
         views: 0,
-        thumbnail_url: 'multer',
+        thumbnail_url: req.body.thumbnail,
         userId: accessTokenData.id,
         categoryId: req.body.categoryId,
       });
 
-      await image.create({
-        name: '임시',
-        image_url: req.body.imageUrl,
-        order: 0,
-        contentId: newContent.dataValues.id,
-      });
+      const imgs = req.body.imageUrl;
+
+      for (let i = 0; i < imgs.length; i++) {
+        await image.create({
+          name: '임시',
+          image_url: imgs[i],
+          order: i,
+          contentId: newContent.dataValues.id,
+        });
+      }
 
       if (!newContent) {
         return res.status(401).send('access token has been tempered');
@@ -36,7 +40,6 @@ module.exports = {
           id: newContent.id,
           message: 'created new content successfully',
         },
-        message: 'ok',
       });
     }
     res.status(500).send('err');
