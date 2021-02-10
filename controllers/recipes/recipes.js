@@ -1,4 +1,4 @@
-const { content, category } = require('../../models');
+const { content, category, user } = require('../../models');
 const sequelize = require('sequelize');
 const Op = sequelize.Op;
 module.exports = {
@@ -12,25 +12,38 @@ module.exports = {
 
     //case1. 카테고리에 따른 데이터 get
     if (req.query.category && req.query.page) {
-      const categoryName = req.query.category;
-
       const categoryValue = await category.findOne({
-        where: { name: categoryName },
+        where: { name: req.query.category },
       });
+      const categorysId = categoryValue.dataValues.id;
 
       const allContent = await content.findAndCountAll({
-        where: { categoryId: categoryValue.dataValues.id },
+        where: { categoryId: categorysId },
         attributes: [
           'id',
           'title',
+          'content',
           'thumbnail_url',
           'createdAt',
           'rate',
           'views',
+          'userId',
         ],
         offset: offset,
         limit: 20,
       });
+
+      let users;
+
+      for (let i = 0; i < allContent.count; i++) {
+        users = await user.findOne({
+          where: { id: allContent.rows[i].dataValues.userId },
+          attributes: ['nickname', 'avatar_url'],
+        });
+
+        allContent.rows[i].dataValues.nickname = users.dataValues.nickname;
+        allContent.rows[i].dataValues.avatar_url = users.dataValues.avatar_url;
+      }
 
       // 카테고리네임 추가
       allContent.rows.map(
@@ -39,7 +52,7 @@ module.exports = {
 
       return res.status(200).send({
         data: {
-          recipes: [allContent.rows],
+          recipes: allContent.rows,
           contentSum: allContent.count,
         },
       });

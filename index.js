@@ -9,11 +9,9 @@ const cookieParser = require('cookie-parser');
  *********************************************************************************************/
 const multer = require('multer');
 const path = require('path');
-//const fs = require('fs');
 const AWS = require('aws-sdk');
 const multerS3 = require('multer-s3');
 const dotenv = require('dotenv');
-const { url } = require('inspector');
 dotenv.config();
 
 AWS.config.update({
@@ -42,12 +40,14 @@ app.use(
   cors({
     origin: true,
     credentials: true,
-    methods: ['GET', 'POST', 'PATCH', 'DELETE', 'OPTIONS'],
+
+    methods: ['GET', 'POST', 'DELETE', 'PATCH', 'OPTIONS'],
+
   }),
 );
 
 sequelize
-  .sync({ force: false })
+  .sync({ force: true })
   .then(() => console.log('데이터베이스 연결 성공'))
   .catch(err => console.error(err));
 //force: true라면 서버 시작 시 테이블 재생성 (테이블 잘못 생성되었을 때, 개발 초기에 사용하자.)

@@ -12,13 +12,9 @@ module.exports = {
       const contentInfo = await content.destroy({
         where: { id: req.body.id },
       });
-
+      console.log(contentInfo);
       await image.destroy({
         where: { contentId: contentInfo.dataValues.id },
-      });
-
-      await category.destroy({
-        where: { id: contentInfo.dataValues.categoryId },
       });
 
       if (!contentInfo) {
