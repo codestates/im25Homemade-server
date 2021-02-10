@@ -1,4 +1,4 @@
-const { user, content, image, category, user_label } = require('../../models');
+const { user, content, image, comment } = require('../../models');
 const { isAuthorized } = require('../tokenFunctions');
 const { refreshToken } = require('../tokenFunctions/refreshtokenrequest');
 
@@ -9,32 +9,35 @@ module.exports = {
     if (!accessTokenData) {
       refreshToken(req, res);
     } else {
+      console.log(accessTokenData.id);
       const userId = accessTokenData.id;
-      const contentInfo = await content.findOne({
+
+      //지워야할 데이터? 1. 유저 2. 모든 컨텐츠 3. 모든 이미지 4. 모든 댓글
+      //! 1. 유저 데이터 삭제
+      await user.destroy({
+        where: { id: userId },
+      });
+      // user.destroy => 삭제된 갯수를 return 한다. 즉, 찾으면 삭제한다.
+
+      const findContents = await content.findAll({
+        where: { userId: userId },
+        attributes: ['id'],
+      });
+      let contentIdArray = findContents.map(content => content.dataValues.id);
+
+      //! 2. 모든 이미지 삭제(content id 필요)
+      await image.destroy({
+        where: { contentId: contentIdArray },
+      });
+      //! 3. 모든 댓글 삭제(content id 필요)
+      await comment.destroy({
+        where: { contentId: contentIdArray },
+      });
+      //! 4. 마지막으로 모든 컨텐츠 데이터 삭제.
+      await content.destroy({
         where: { userId: userId },
       });
-      if (!contentInfo) {
-        return res.status(400).send('cannot find content');
-      }
-      try {
-        await content.destroy({
-          where: { userId: userId },
-        });
-
-        await image.destroy({
-          where: { contentid: contentInfo.dataValues.id },
-        });
-
-        await user.destroy({
-          where: { id: userId },
-        });
-      } catch (err) {
-        return res.status(404).send('err');
-      }
-      if (!userData) {
-        return res.status(401).send('access token has been tempered');
-      }
-      return res.status(200).send('delete user information successfully');
+      return res.status(200).send('deleted user information successfully');
     }
     return res.status(500).send('err');
   },

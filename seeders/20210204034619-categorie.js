@@ -7,16 +7,13 @@ module.exports = {
       [
         {
           name: 'korea',
-          contentId: 1,
         },
         {
           name: 'china',
-          contentId: 2,
         },
-        { name: 'japan', contentId: 3 },
+        { name: 'japan' },
         {
           name: 'west',
-          contentId: 2,
         },
       ],
       {},
