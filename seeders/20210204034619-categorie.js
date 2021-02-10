@@ -16,7 +16,7 @@ module.exports = {
         { name: 'japan', contentId: 3 },
         {
           name: 'west',
-          contentId: 4,
+          contentId: 2,
         },
       ],
       {},
