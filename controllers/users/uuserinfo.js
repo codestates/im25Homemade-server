@@ -12,39 +12,65 @@ module.exports = {
     if (!accessTokenData) {
       refreshToken(req, res);
     } else if (accessTokenData) {
-      const { password, nickname, mobile, avatar } = req.body;
+      const { password, mobile, avatar } = req.body;
 
-      const encrypted = crypto
-        .pbkdf2Sync(password, process.env.DATABASE_SALT, 100000, 64, 'sha512')
-        .toString('base64');
+      const isUpdated = async () => {
+        if (password) {
+          const encrypted = crypto
+            .pbkdf2Sync(
+              password,
+              process.env.DATABASE_SALT,
+              100000,
+              64,
+              'sha512',
+            )
+            .toString('base64');
+          return user.update(
+            {
+              password: encrypted,
+              updatedAt: new Date(),
+            },
+            {
+              where: { id: accessTokenData.id },
+            },
+          );
+        } else if (mobile) {
+          return user.update(
+            {
+              mobile: mobile,
+              updatedAt: new Date(),
+            },
+            {
+              where: { id: accessTokenData.id },
+            },
+          );
+        } else if (avatar) {
+          return user.update(
+            {
+              avatar_url: avatar,
+              updatedAt: new Date(),
+            },
+            {
+              where: { id: accessTokenData.id },
+            },
+          );
+        }
+      };
 
-      const isUpdated = await user.update(
-        {
-          nickname: nickname,
-          password: encrypted,
-          mobile: mobile,
-          avatar_url: avatar,
-          updatedAt: new Date(),
-        },
-        {
-          where: { id: accessTokenData.id },
-          returning: true,
-          plain: true,
-        },
-      );
-      if (!isUpdated) {
+      const isUpdatedResult = await isUpdated();
+
+      if (!isUpdatedResult) {
         throw 'Error while Updating';
       }
       const returnedUpdatedUserinfo = await user.findOne({
         where: { id: accessTokenData.id },
       });
       delete returnedUpdatedUserinfo.dataValues.password;
-      res.status(200).json({
+      return res.status(200).json({
         data: { userInfo: returnedUpdatedUserinfo.dataValues },
         message: 'ok',
       });
-    } else {
-      res.status(500).send('err');
     }
+    res.status(500).send('err');
   },
 };
