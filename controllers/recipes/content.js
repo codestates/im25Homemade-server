@@ -28,10 +28,10 @@ module.exports = {
 
         const imgs = req.body.imageUrl;
 
-        for (let i = 0; i < imgs.length; i++) {
+        for (let i = 1; i < imgs.length + 1; i++) {
           await image.create({
             name: '임시',
-            image_url: imgs[i],
+            image_url: imgs[i - 1],
             order: i,
             contentId: newContent.dataValues.id,
           });
