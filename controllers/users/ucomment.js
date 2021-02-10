@@ -1,4 +1,7 @@
 const { comment } = require('../../models');
+const { content } = require('../../models');
+const { user } = require('../../models');
+
 const { isAuthorized } = require('../tokenFunctions');
 const { refreshToken } = require('../tokenFunctions/refreshtokenrequest');
 
