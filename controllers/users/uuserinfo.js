@@ -60,7 +60,7 @@ module.exports = {
       const isUpdatedResult = await isUpdated();
 
       if (!isUpdatedResult) {
-        throw 'Error while Updating';
+        res.status(404).send('result not found');
       }
       const returnedUpdatedUserinfo = await user.findOne({
         where: { id: accessTokenData.id },

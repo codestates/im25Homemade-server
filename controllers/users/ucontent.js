@@ -36,7 +36,7 @@ module.exports = {
       );
 
       if (!isUpdated || !isImageUpdated) {
-        throw 'Error while Updating';
+        res.status(404).send('content not found');
       }
       const returnedUpdatedContent = await content.findOne({
         where: { id: contentId },

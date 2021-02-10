@@ -29,12 +29,12 @@ module.exports = {
           where: { id: userId },
         });
       } catch (err) {
-        return res.status(400).send(err);
+        return res.status(404).send('err');
       }
       if (!userData) {
         return res.status(401).send('access token has been tempered');
       }
-      return res.status(200).send('delete content successfully');
+      return res.status(200).send('delete user information successfully');
     }
     return res.status(500).send('err');
   },

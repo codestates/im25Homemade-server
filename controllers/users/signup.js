@@ -28,7 +28,7 @@ module.exports = {
         if (!created) {
           return res.status(409).send('email already exists');
         }
-        res.status(201).send('Created Successfully');
+        res.status(201).send('created successfully');
       })
       .catch(err => {
         res.status(500).send(err);
