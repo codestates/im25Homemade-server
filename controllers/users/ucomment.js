@@ -17,7 +17,7 @@ module.exports = {
       const isUpdated = await comment.update(
         { text: text, updatedAt: new Date() },
         {
-          where: { userId: accessTokenData.id, contentId: contentId },
+          where: { id: commentId, contentId: contentId },
         },
       );
 

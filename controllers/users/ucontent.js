@@ -24,32 +24,46 @@ module.exports = {
           where: { id: contentId },
         },
       );
-      const isImageUpdated = await image.update(
-        {
-          image_url: imageUrl,
-        },
-        {
-          where: {
-            contentId: contentId, //! returning, plain 필요없음 => 다른 업데이트 로직 변경할 것.
-          },
-        },
-      );
 
-      if (!isUpdated || !isImageUpdated) {
+      for (let i = 0; i < imageUrl.length; i++) {
+        await image.update(
+          {
+            image_url: imageUrl[i],
+          },
+          {
+            where: {
+              contentId: contentId,
+              order: i + 1,
+            },
+          },
+        );
+      }
+
+      if (!isUpdated) {
         res.status(404).send('content not found');
       }
       const returnedUpdatedContent = await content.findOne({
         where: { id: contentId },
       });
-      const returnedUpdatedImage = await image.findOne({
-        where: { contentId: contentId },
-      });
+      const returnImages = async () => {
+        let images = [];
+        for (let i = 0; i < imageUrl.length; i++) {
+          let imageurl = await image.findOne({
+            where: { contentId: contentId, order: i + 1 },
+            attributes: ['image_url'],
+          });
+          images.push(imageurl);
+        }
+        return images;
+      };
+
+      const returnedImageUrls = await returnImages();
 
       return res.status(200).json({
         data: {
           contentInfo: {
             ...returnedUpdatedContent.dataValues,
-            image_url: returnedUpdatedImage.image_url,
+            image_url: returnedImageUrls,
           },
         },
         message: 'ok',
