@@ -2,7 +2,7 @@ const { user } = require('../../models');
 const { isAuthorized } = require('../tokenFunctions');
 const { refreshToken } = require('../tokenFunctions/refreshtokenrequest');
 const crypto = require('crypto');
-require('dotenv').config;
+require('dotenv').config();
 
 module.exports = {
   patch: async (req, res) => {

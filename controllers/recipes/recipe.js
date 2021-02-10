@@ -10,7 +10,6 @@ module.exports = {
     if (recipe === null) {
       return res.status(400).send('cannot find recipe');
     }
-    console.log(recipe);
 
     delete recipe.dataValues.updatedAt;
 

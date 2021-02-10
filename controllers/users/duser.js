@@ -13,7 +13,6 @@ module.exports = {
       const contentInfo = await content.findOne({
         where: { userId: userId },
       });
-      console.log(contentInfo);
       if (!contentInfo) {
         return res.status(400).send('cannot find content');
       }
