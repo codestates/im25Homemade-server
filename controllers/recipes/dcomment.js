@@ -7,7 +7,7 @@ module.exports = {
     const accessTokenData = isAuthorized(req);
     if (!accessTokenData) {
       refreshToken(req, res);
-    } else {
+    } else if (accessTokenData) {
       const deletedComment = await comment.destroy({
         where: { id: req.body.id },
       });
@@ -16,6 +16,9 @@ module.exports = {
         return res.status(400).send('cannot find comment');
       }
       return res.status(200).send('delete comment successfully');
+    }
+    if (!accessTokenData) {
+      return res.status(401).send('access token has been tempered');
     }
     return res.status(500).send('err');
   },

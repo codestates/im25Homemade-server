@@ -1,4 +1,4 @@
-const { content, image, categorie } = require('../../models');
+const { content, image, comment } = require('../../models');
 const { isAuthorized } = require('../tokenFunctions');
 const { refreshToken } = require('../tokenFunctions/refreshtokenrequest');
 
@@ -8,16 +8,26 @@ module.exports = {
     const accessTokenData = isAuthorized(req);
     if (!accessTokenData) {
       refreshToken(req, res);
-    } else {
-      const contentInfo = await content.destroy({
-        where: { id: req.body.id },
-      });
+    } else if (accessTokenData) {
+      const contentInfo = await content
+        .destroy({
+          where: { id: req.body.id },
+        })
+        .then(data => {
+          return data;
+        });
+      console.log(contentInfo);
+
       await image.destroy({
-        where: { contentId: contentInfo.dataValues.id },
+        where: { contentId: contentInfo },
       });
 
-      if (!contentInfo) {
-        return res.status(401).send('invalid token');
+      await comment.destroy({
+        where: { contentId: contentInfo },
+      });
+
+      if (!accessTokenData) {
+        return res.status(401).send('access token has been tempered');
       }
 
       return res.status(200).send('delete content successfully');

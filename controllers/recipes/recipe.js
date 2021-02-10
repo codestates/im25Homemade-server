@@ -44,7 +44,7 @@ module.exports = {
 
     const users = await user.findOne({
       where: { id: recipe.dataValues.userId },
-      attributes: ['nickname'],
+      attributes: ['id', 'nickname', 'avatar_url'],
     });
 
     const comments = await comment
@@ -65,6 +65,8 @@ module.exports = {
         data: {
           recipe: {
             id: recipe.dataValues.id,
+            userId: users.dataValues.id,
+            avatar_url: users.dataValues.avatar_url,
             username: users.dataValues.nickname,
             title: recipe.dataValues.title,
             content: recipe.dataValues.content,
