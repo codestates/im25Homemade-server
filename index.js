@@ -12,6 +12,7 @@ const path = require('path');
 const AWS = require('aws-sdk');
 const multerS3 = require('multer-s3');
 const dotenv = require('dotenv');
+const { response } = require('express');
 dotenv.config();
 
 AWS.config.update({
@@ -93,6 +94,15 @@ app.post('/image', upload.array('imgs', 20), function (req, res) {
 
   console.log(imageUrls);
   res.send(imageUrls);
+});
+
+app.post('/avatarimage', upload.single('img'), function async(req, res) {
+  try {
+    console.log('req.file: ', req.file.location);
+    res.status(200).json({ avatarurl: req.file.location });
+  } catch (err) {
+    res.status(500).send('err');
+  }
 });
 
 /*********************** Multer code end ************************************************************
