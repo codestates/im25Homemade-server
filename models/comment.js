@@ -16,13 +16,9 @@ module.exports = (sequelize, DataTypes) => {
       text: DataTypes.STRING,
       userId: DataTypes.INTEGER,
       contentId: DataTypes.INTEGER,
-      createdAt: {
-        defaultValue: sequelize.literal('now()'),
-        type: DataTypes.DATE,
-      },
-      updatedAt: {
-        defaultValue: sequelize.literal('now()'),
-        type: DataTypes.DATE,
+      rate: {
+        type: DataTypes.INTEGER,
+        defaultValue: 0,
       },
     },
     {

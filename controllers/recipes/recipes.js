@@ -1,5 +1,6 @@
-const { content, category, user } = require('../../models');
+const { content, category, user, comment } = require('../../models');
 const sequelize = require('sequelize');
+
 const Op = sequelize.Op;
 module.exports = {
   get: async (req, res) => {
@@ -33,7 +34,6 @@ module.exports = {
           'content',
           'thumbnail_url',
           'createdAt',
-          'rate',
           'views',
           'userId',
           'categoryId',
