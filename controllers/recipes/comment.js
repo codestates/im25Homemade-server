@@ -1,4 +1,4 @@
-const { comment, content, user } = require('../../models');
+const { comment, user } = require('../../models');
 const { isAuthorized } = require('../tokenFunctions');
 const { refreshToken } = require('../tokenFunctions/refreshtokenrequest');
 const { randomBytes } = require('crypto');
@@ -10,61 +10,35 @@ module.exports = {
     if (!accessTokenData) {
       refreshToken(req, res);
     } else if (accessTokenData) {
-      const createNewComment = await comment
-        .create({
-          text: req.body.text,
-          userId: accessTokenData.id,
-          contentId: req.body.id,
-        })
-        .then(data => {
-          return data.dataValues;
-        });
-
-      if (req.body.rate) {
-        const rates = await content
-          .findOne({
-            where: { id: req.body.id },
-            attributes: ['rate'],
-          })
-          .then(data => {
-            return data.dataValues.rate;
-          });
-
-        await content.update(
-          {
-            rate: rates + req.body.rate,
-          },
-          {
-            where: { id: req.body.id },
-          },
-        );
+      const createNewComment = await comment.create({
+        text: req.body.text,
+        userId: accessTokenData.id,
+        contentId: req.body.id,
+        rate: req.body.rate ? req.body.rate : null,
+      });
+      if (!createNewComment.dataValues.id) {
+        return res.status(400).send('cannot create comment');
       }
 
       const username = await user
         .findOne({
-          where: { id: req.body.userId },
+          where: { id: accessTokenData.id },
           attributes: ['nickname'],
         })
         .then(data => {
           return data.dataValues.nickname;
         });
-      const currentTime = await comment
-        .findOne({
-          where: { id: createNewComment.id },
-          attributes: ['createdAt'],
-        })
-        .then(data => {
-          return data.dataValues.createdAt;
-        });
 
       return res.status(201).send({
         data: {
           commentInfo: {
-            id: createNewComment.id,
+            id: createNewComment.dataValues.id,
             nickname: username,
-            created_At: currentTime,
-            text: createNewComment.text,
-            rate: req.body.rate,
+            text: createNewComment.dataValues.text,
+            created_At: createNewComment.dataValues.createdAt,
+            rate: createNewComment.dataValues.rate
+              ? createNewComment.dataValues.rate
+              : 'not rated',
           },
         },
         message: 'ok',

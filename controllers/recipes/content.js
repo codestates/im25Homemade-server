@@ -19,8 +19,6 @@ module.exports = {
         const newContent = await content.create({
           title: req.body.title,
           content: req.body.content,
-          rate: 0,
-          views: 0,
           thumbnail_url: req.body.thumbnail,
           userId: accessTokenData.id,
           categoryId: req.body.categoryId,

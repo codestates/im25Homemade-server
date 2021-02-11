@@ -15,11 +15,14 @@ module.exports = (sequelize, DataTypes) => {
     {
       title: DataTypes.STRING,
       content: DataTypes.STRING,
-      rate: DataTypes.INTEGER,
-      views: DataTypes.INTEGER,
+      views: {
+        type: DataTypes.INTEGER,
+        defaultValue: 0,
+      },
       thumbnail_url: DataTypes.STRING,
       userId: DataTypes.INTEGER,
       categoryId: DataTypes.INTEGER,
+      rate: { type: DataTypes.INTEGER, defaultValue: 0 },
       createdAt: {
         defaultValue: sequelize.literal('now()'),
         type: DataTypes.DATE,

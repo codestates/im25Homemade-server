@@ -10,7 +10,6 @@ module.exports = {
     if (recipe === null) {
       return res.status(400).send('cannot find recipe');
     }
-    console.log(recipe);
 
     delete recipe.dataValues.updatedAt;
 
@@ -48,18 +47,20 @@ module.exports = {
       attributes: ['nickname'],
     });
 
-    const comments = await comment
-      .findAll({
-        where: { contentId: recipe.dataValues.id },
-        attributes: ['text', 'createdAt'],
-      })
-      .then(data => {
-        const commentsArr = [];
-        for (let i = 0; i < data.length; i++) {
-          commentsArr.push(data[i].dataValues.text);
-        }
-        return commentsArr;
-      });
+    const comments = await comment.findAndCountAll({
+      where: { contentId: recipe.dataValues.id },
+      attributes: ['id', 'userId', 'text', 'createdAt', 'rate'],
+    });
+
+    let sum = 0;
+    let evaluator = 0;
+    for (let idx = 0; idx < comments.count; idx++) {
+      if (comments.rows[idx].dataValues.rate !== null) {
+        sum = sum + comments.rows[idx].dataValues.rate;
+        evaluator++;
+      }
+    }
+    const rateAvg = sum / evaluator;
 
     if (recipe) {
       return res.status(200).send({
@@ -72,8 +73,8 @@ module.exports = {
             thumbnail_url: recipe.dataValues.thumbnail_url,
             image_urls: images,
             create_at: recipe.dataValues.createdAt,
-            comments: comments,
-            rate: recipe.dataValues.rate,
+            comments: comments.rows,
+            rate: rateAvg,
             views: recipe.dataValues.views,
             categoryName: categoryName,
           },
