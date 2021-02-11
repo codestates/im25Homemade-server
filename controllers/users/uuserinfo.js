@@ -2,7 +2,7 @@ const { user } = require('../../models');
 const { isAuthorized } = require('../tokenFunctions');
 const { refreshToken } = require('../tokenFunctions/refreshtokenrequest');
 const crypto = require('crypto');
-require('dotenv').config;
+require('dotenv').config();
 
 module.exports = {
   patch: async (req, res) => {
@@ -60,7 +60,7 @@ module.exports = {
       const isUpdatedResult = await isUpdated();
 
       if (!isUpdatedResult) {
-        throw 'Error while Updating';
+        res.status(404).send('result not found');
       }
       const returnedUpdatedUserinfo = await user.findOne({
         where: { id: accessTokenData.id },

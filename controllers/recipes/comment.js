@@ -26,7 +26,11 @@ module.exports = {
           attributes: ['nickname'],
         })
         .then(data => {
-          return data.dataValues.nickname;
+          if (data) {
+            return data.dataValues.nickname;
+          } else {
+            return res.status(404).send('cannot find user');
+          }
         });
 
       return res.status(201).send({

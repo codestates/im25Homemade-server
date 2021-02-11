@@ -36,9 +36,9 @@ module.exports = {
         },
       );
       if (!isUpdated) {
-        throw 'Error while Updating';
+        res.status(404).send('userinfo not found');
       }
-      res.status(200).send('password successfully updated');
+      res.status(202).send('password successfully updated');
     } else {
       res.status(500).send('err');
     }

@@ -17,14 +17,12 @@ module.exports = {
       const isUpdated = await comment.update(
         { text: text, updatedAt: new Date() },
         {
-          where: { userId: accessTokenData.id, contentId: contentId },
-          returning: true,
-          plain: true,
+          where: { id: commentId, contentId: contentId },
         },
       );
 
       if (!isUpdated) {
-        throw 'Error while Updating';
+        res.status(404).send('comment not found');
       }
       const returnedUpdatedComment = await comment.findOne({
         attributes: ['id', 'text', 'createdAt'],

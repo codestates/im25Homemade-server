@@ -2,7 +2,6 @@ const { content } = require('../../models');
 const { isAuthorized } = require('../tokenFunctions');
 const { refreshToken } = require('../tokenFunctions/refreshtokenrequest');
 
-
 module.exports = {
   get: async (req, res) => {
     //TODO: 유저정보 get 요청 로직 작성
@@ -16,7 +15,7 @@ module.exports = {
         where: { userId: id },
       });
       if (!myrecipes) {
-        res.status(400).send('cannot find recipe');
+        res.status(404).send('cannot find recipe');
       }
       let filteredRecipies = [];
       for (let i = 0; i < myrecipes.length; i++) {
