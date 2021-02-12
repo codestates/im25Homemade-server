@@ -45,6 +45,10 @@ module.exports = {
       //닉네임 추가
       let users;
       for (let i = 0; i < allContent.count; i++) {
+        if (allContent.rows[i] === undefined) {
+          break;
+        }
+
         users = await user.findOne({
           where: { id: allContent.rows[i].dataValues.userId },
           attributes: ['nickname'],
@@ -91,6 +95,9 @@ module.exports = {
 
       if (searchResults.count !== 0) {
         for (let i = 0; i < searchResults.count; i++) {
+          if (searchResults.rows[i] === undefined) {
+            break;
+          }
           let categoryValues = await category.findOne({
             where: {
               id: searchResults.rows[i].dataValues.categoryId,
@@ -100,9 +107,12 @@ module.exports = {
             categoryValues.dataValues.name;
         }
       }
-      console.log(searchResults.rows[0].dataValues);
+
       let users;
       for (let i = 0; i < searchResults.count; i++) {
+        if (searchResults.rows[i] === undefined) {
+          break;
+        }
         users = await user.findOne({
           where: { id: searchResults.rows[i].dataValues.userId },
           attributes: ['nickname'],

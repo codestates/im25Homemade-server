@@ -19,7 +19,7 @@ module.exports = {
         const newContent = await content.create({
           title: req.body.title,
           content: req.body.contents,
-          thumbnailUrl: req.body.thumbnailUrl,
+          thumbnail_url: req.body.thumbnailUrl,
           userId: accessTokenData.id,
           categoryId: req.body.categoryId,
         });
