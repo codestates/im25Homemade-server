@@ -1,3 +1,4 @@
+const cookieParser = require('cookie-parser');
 const { content, image, category, user, comment } = require('../../models');
 module.exports = {
   get: async (req, res) => {
@@ -60,6 +61,29 @@ module.exports = {
         evaluator++;
       }
     }
+
+    console.log(comments.rows);
+
+    const returendComments = async () => {
+      for (let i = 0; i < comments.rows.length; i++) {
+        let userId = comments.rows[i].dataValues.userId;
+        let userNick = await user.findOne({
+          attributes: ['nickname'],
+          where: { id: userId },
+        });
+        console.log('here is nick');
+        console.log(comments.rows.dataValues);
+        comments.rows.dataValues.nickname = userNick.dataValues.nickname;
+      }
+      return comments.rows;
+    };
+
+    const resultComments = await returendComments();
+    console.log('here is resultComments');
+    console.log(resultComments);
+
+    return;
+
     const rateAvg = sum / evaluator;
 
     if (recipe) {
@@ -68,13 +92,13 @@ module.exports = {
           recipe: {
             id: recipe.dataValues.id,
             userId: users.dataValues.id,
-            avatar_url: users.dataValues.avatar_url,
+            avatarUrl: users.dataValues.avatar_url,
             username: users.dataValues.nickname,
             title: recipe.dataValues.title,
             content: recipe.dataValues.content,
-            thumbnail_url: recipe.dataValues.thumbnail_url,
-            image_urls: images,
-            create_at: recipe.dataValues.createdAt,
+            thumbnailUrl: recipe.dataValues.thumbnail_url,
+            imageUrls: images,
+            createdAt: recipe.dataValues.createdAt,
             comments: comments.rows,
             rate: rateAvg,
             views: recipe.dataValues.views,

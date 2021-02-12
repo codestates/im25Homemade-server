@@ -9,7 +9,6 @@ module.exports = {
     if (!accessTokenData) {
       refreshToken(req, res);
     } else {
-      console.log(accessTokenData.id);
       const userId = accessTokenData.id;
 
       //지워야할 데이터? 1. 유저 2. 모든 컨텐츠 3. 모든 이미지 4. 모든 댓글

@@ -37,9 +37,10 @@ module.exports = {
         data: {
           commentInfo: {
             id: createNewComment.dataValues.id,
+            userId: createNewComment.dataValues.userId,
             nickname: username,
             text: createNewComment.dataValues.text,
-            created_At: createNewComment.dataValues.createdAt,
+            createdAt: createNewComment.dataValues.createdAt,
             rate: createNewComment.dataValues.rate
               ? createNewComment.dataValues.rate
               : 'not rated',
