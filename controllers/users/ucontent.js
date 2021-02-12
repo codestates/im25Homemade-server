@@ -63,7 +63,7 @@ module.exports = {
         data: {
           contentInfo: {
             ...returnedUpdatedContent.dataValues,
-            image_url: returnedImageUrls,
+            imageUrls: returnedImageUrls,
           },
         },
         message: 'ok',
