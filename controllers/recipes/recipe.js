@@ -81,9 +81,7 @@ module.exports = {
     const resultComments = await returendComments();
     console.log('here is resultComments');
     console.log(resultComments);
-
-    return;
-
+    zz;
     const rateAvg = sum / evaluator;
 
     if (recipe) {
