@@ -42,6 +42,7 @@ module.exports = {
         limit: 20,
       });
 
+      //닉네임 추가
       let users;
       for (let i = 0; i < allContent.count; i++) {
         users = await user.findOne({
@@ -82,24 +83,34 @@ module.exports = {
           'rate',
           'views',
           'categoryId',
+          'userId',
         ],
         offset: offset,
         limit: 20,
       });
-      console.log(searchResults);
-      let valuesCategory;
+
       if (searchResults.count !== 0) {
-        valuesCategory = await category
-          .findOne({
-            where: { id: searchResults.rows[0].dataValues.categoryId },
-          })
-          .then(data => data.dataValues.name);
+        for (let i = 0; i < searchResults.count; i++) {
+          let categoryValues = await category.findOne({
+            where: {
+              id: searchResults.rows[i].dataValues.categoryId,
+            },
+          });
+          searchResults.rows[i].dataValues.categoryName =
+            categoryValues.dataValues.name;
+        }
       }
-      // 카테고리네임 추가
-      searchResults.rows.map(item => {
-        item.dataValues.categoryName = valuesCategory;
-        delete item.dataValues.categoryId;
-      });
+      console.log(searchResults.rows[0].dataValues);
+      let users;
+      for (let i = 0; i < searchResults.count; i++) {
+        users = await user.findOne({
+          where: { id: searchResults.rows[i].dataValues.userId },
+          attributes: ['nickname'],
+        });
+        if (users !== null) {
+          searchResults.rows[i].dataValues.nickname = users.dataValues.nickname;
+        }
+      }
 
       return res.status(200).send({
         data: {
