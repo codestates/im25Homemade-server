@@ -98,7 +98,7 @@ module.exports = {
             content: recipe.dataValues.content,
             thumbnailUrl: recipe.dataValues.thumbnail_url,
             imageUrls: images,
-            createAt: recipe.dataValues.createdAt,
+            createdAt: recipe.dataValues.createdAt,
             comments: comments.rows,
             rate: rateAvg,
             views: recipe.dataValues.views,
