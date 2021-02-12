@@ -12,7 +12,7 @@ module.exports = {
     if (!accessTokenData) {
       refreshToken(req, res);
     } else if (accessTokenData) {
-      const { password, mobile, avatar } = req.body;
+      const { password, mobile, avatarUrl } = req.body;
 
       const isUpdated = async () => {
         if (password) {
@@ -44,10 +44,10 @@ module.exports = {
               where: { id: accessTokenData.id },
             },
           );
-        } else if (avatar) {
+        } else if (avatarUrl) {
           return user.update(
             {
-              avatar_url: avatar,
+              avatar_url: avatarUrl,
               updatedAt: new Date(),
             },
             {

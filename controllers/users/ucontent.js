@@ -10,7 +10,7 @@ module.exports = {
     if (!accessTokenData) {
       refreshToken(req, res);
     } else if (accessTokenData) {
-      const { contentId, imageUrl, title, contents, thumbnailUrl } = req.body;
+      const { contentId, imageUrls, title, contents, thumbnailUrl } = req.body;
 
       //! contentInfo 를 배열로 담아서 유저에게 전달. 고민 필요.
       const isUpdated = await content.update(
@@ -25,10 +25,10 @@ module.exports = {
         },
       );
 
-      for (let i = 0; i < imageUrl.length; i++) {
+      for (let i = 0; i < imageUrls.length; i++) {
         await image.update(
           {
-            image_url: imageUrl[i],
+            image_url: imageUrls[i],
           },
           {
             where: {
@@ -47,7 +47,7 @@ module.exports = {
       });
       const returnImages = async () => {
         let images = [];
-        for (let i = 0; i < imageUrl.length; i++) {
+        for (let i = 0; i < imageUrls.length; i++) {
           let imageurl = await image.findOne({
             where: { contentId: contentId, order: i + 1 },
             attributes: ['image_url'],
