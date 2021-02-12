@@ -62,27 +62,15 @@ module.exports = {
       }
     }
 
-    console.log(comments.rows);
-
-    const returendComments = async () => {
-      for (let i = 0; i < comments.rows.length; i++) {
-        let userId = comments.rows[i].dataValues.userId;
-        let userNick = await user.findOne({
-          attributes: ['nickname'],
-          where: { id: userId },
+    for (let i = 0; i < comments.count; i++) {
+      await user
+        .findOne({
+          where: { id: comments.rows[i].dataValues.userId },
+        })
+        .then(data => {
+          comments.rows[i].dataValues.nickname = data.dataValues.nickname;
         });
-        console.log('here is nick');
-        console.log(comments.rows.dataValues);
-        comments.rows.dataValues.nickname = userNick.dataValues.nickname;
-      }
-      return comments.rows;
-    };
-
-    const resultComments = await returendComments();
-    console.log('here is resultComments');
-    console.log(resultComments);
-
-    return;
+    }
 
     const rateAvg = sum / evaluator;
 
@@ -100,7 +88,7 @@ module.exports = {
             imageUrls: images,
             createdAt: recipe.dataValues.createdAt,
             comments: comments.rows,
-            rate: rateAvg,
+            rate: rateAvg.toFixed(2),
             views: recipe.dataValues.views,
             categoryName: categoryName,
           },
