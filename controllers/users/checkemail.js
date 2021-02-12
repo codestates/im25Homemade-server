@@ -1,7 +1,7 @@
 const { user } = require('../../models');
 
 module.exports = {
-  get: async (req, res) => {
+  post: async (req, res) => {
     //TODO: email 중복 여부를 판단하는 로직 구현
 
     const { email } = req.body;
