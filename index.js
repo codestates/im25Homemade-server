@@ -59,47 +59,32 @@ sequelize
 /*********************** Multer code ************************************************************
  ********************************************************************************************/
 app.post('/image', upload.array('imgs', 20), function (req, res) {
-  //console.log(req.files);
-  //
   //sort(file.originalname) 한번 하고, foreach() 돌리기전에
   const files = req.files;
-
-  files.map(file => {
-    if (file.originalname === 'thumbnail') {
-      return;
-    }
-    file.originalname = Number(file.originalname.slice(4));
-  });
-
-  files.sort(function (a, b) {
-    return a.originalname < b.originalname
-      ? -1
-      : a.originalname > b.originalname
-      ? 1
-      : 0;
-  });
 
   const imageUrls = {
     thumbnail: '',
     images: [],
   };
 
-  files.map(list => {
+  let obj = {};
+
+  files.forEach(list => {
     if (list.originalname === 'thumbnail') {
       imageUrls.thumbnail = list.location;
     } else {
-      imageUrls.images.push(list.location);
+      obj[list.originalname] = list.location;
+      imageUrls.images.push(obj);
+      obj = {};
     }
   });
-
-  console.log(imageUrls);
   res.send(imageUrls);
 });
 
 app.post('/avatarimage', upload.single('img'), function async(req, res) {
   try {
     console.log('req.file: ', req.file.location);
-    res.status(200).json({ avatarurl: req.file.location });
+    res.status(200).json({ avatarUrl: req.file.location });
   } catch (err) {
     res.status(500).send('err');
   }

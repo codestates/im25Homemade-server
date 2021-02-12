@@ -37,10 +37,14 @@ module.exports = {
         data: {
           commentInfo: {
             id: createNewComment.dataValues.id,
+<<<<<<< HEAD
             userId: accessTokenData.id,
+=======
+            userId: createNewComment.dataValues.userId,
+>>>>>>> 51299dcc0d84d07e23b6ec9fa5a0bf706c9ea871
             nickname: username,
             text: createNewComment.dataValues.text,
-            created_At: createNewComment.dataValues.createdAt,
+            createdAt: createNewComment.dataValues.createdAt,
             rate: createNewComment.dataValues.rate
               ? createNewComment.dataValues.rate
               : 'not rated',

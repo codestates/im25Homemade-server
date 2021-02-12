@@ -25,24 +25,20 @@ module.exports = {
         res.status(404).send('comment not found');
       }
       const returnedUpdatedComment = await comment.findOne({
-        attributes: ['id', 'text', 'createdAt'],
+        attributes: ['id', 'text', 'rate', 'createdAt', 'updatedAt'],
         where: { id: commentId },
       });
       const returnedNickname = await user.findOne({
         attributes: ['nickname'],
         where: { id: accessTokenData.id },
       });
-      const returnedRate = await content.findOne({
-        attributes: ['rate'],
-        where: { id: contentId },
-      });
 
       res.status(200).json({
         data: {
           commentInfo: {
+            userId: accessTokenData.id,
             ...returnedUpdatedComment.dataValues,
             ...returnedNickname.dataValues,
-            ...returnedRate.dataValues,
           },
         },
       });

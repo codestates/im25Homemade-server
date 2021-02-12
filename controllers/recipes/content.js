@@ -9,8 +9,8 @@ module.exports = {
     if (
       req.body.title &&
       req.body.imageUrl &&
-      req.body.thumbnail &&
-      req.body.content
+      req.body.thumbnailUrl &&
+      req.body.contents
     ) {
       const accessTokenData = isAuthorized(req);
       if (!accessTokenData) {
@@ -18,8 +18,8 @@ module.exports = {
       } else {
         const newContent = await content.create({
           title: req.body.title,
-          content: req.body.content,
-          thumbnail_url: req.body.thumbnail,
+          content: req.body.contents,
+          thumbnailUrl: req.body.thumbnailUrl,
           userId: accessTokenData.id,
           categoryId: req.body.categoryId,
         });

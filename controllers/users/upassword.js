@@ -8,10 +8,6 @@ module.exports = {
 
     const { name, email, mobile, password } = req.body;
 
-    const encrypted = crypto
-      .pbkdf2Sync(password, process.env.DATABASE_SALT, 100000, 64, 'sha512')
-      .toString('base64');
-
     if (name && email && mobile) {
       const isUser = await user.findOne({
         where: {
@@ -26,6 +22,9 @@ module.exports = {
         res.status(200).send('user exists');
       }
     } else if (email && password) {
+      const encrypted = crypto
+        .pbkdf2Sync(password, process.env.DATABASE_SALT, 100000, 64, 'sha512')
+        .toString('base64');
       const isUpdated = await user.update(
         {
           password: encrypted,
