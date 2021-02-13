@@ -9,8 +9,8 @@ router.get('/userinfo', usersController.userinfo.get);
 // * GET /users/myrecipes 유저 레시피들 요청
 router.get('/myrecipes', usersController.myrecipes.get);
 
-// * GET /users/checkemail email 중복여부 판단
-router.get('/checkemail', usersController.checkemail.get);
+// * POST /users/checkemail email 중복여부 판단
+router.post('/checkemail', usersController.checkemail.post);
 
 // * POST /users/signin 유저 로그인
 router.post('/signin', usersController.signin.post);
