@@ -12,7 +12,8 @@ module.exports = {
     } else if (accessTokenData) {
       const { contentId, imageUrls, title, contents, thumbnailUrl } = req.body;
 
-      //! contentInfo 를 배열로 담아서 유저에게 전달. 고민 필요.
+      //! content 업데이트(이미지 제외)
+      console.log('here is ucontent!!');
       const isUpdated = await content.update(
         {
           title: title,
@@ -24,18 +25,21 @@ module.exports = {
           where: { id: contentId },
         },
       );
+      //! image 업데이트
+      function upsert(values, condition) {
+        return image.findOne({ where: condition }).then(function (obj) {
+          // 찾아서 있으면 update. 요소를 찾아서 바로 업데이트 해줄 수 있다.
+          if (obj) return obj.update(values);
+          // 찾아서 없으면 insert.
+          return image.create(values);
+        });
+      }
 
       for (let i = 0; i < imageUrls.length; i++) {
-        await image.update(
-          {
-            image_url: imageUrls[i],
-          },
-          {
-            where: {
-              contentId: contentId,
-              order: i + 1,
-            },
-          },
+        let imageurl = imageUrls[i];
+        upsert(
+          { image_url: imageurl, contentId: contentId, order: i + 1 },
+          { contentId: contentId, order: i + 1 },
         );
       }
 

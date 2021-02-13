@@ -8,7 +8,7 @@ module.exports = {
 
     if (
       req.body.title &&
-      req.body.imageUrl &&
+      req.body.imageUrls &&
       req.body.thumbnailUrl &&
       req.body.contents
     ) {
@@ -24,7 +24,7 @@ module.exports = {
           categoryId: req.body.categoryId,
         });
 
-        const imgs = req.body.imageUrl;
+        const imgs = req.body.imageUrls;
 
         for (let i = 1; i < imgs.length + 1; i++) {
           await image.create({
