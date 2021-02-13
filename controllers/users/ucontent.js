@@ -10,9 +10,10 @@ module.exports = {
     if (!accessTokenData) {
       refreshToken(req, res);
     } else if (accessTokenData) {
-      const { contentId, imageUrls, title, contents, thumbnailUrl } = req.body;
+      const { contentId, imageUrl, title, contents, thumbnailUrl } = req.body;
 
-      //! contentInfo 를 배열로 담아서 유저에게 전달. 고민 필요.
+      //! content 업데이트(이미지 제외)
+      console.log('here is ucontent!!');
       const isUpdated = await content.update(
         {
           title: title,
@@ -24,18 +25,21 @@ module.exports = {
           where: { id: contentId },
         },
       );
+      //! image 업데이트
+      function upsert(values, condition) {
+        return image.findOne({ where: condition }).then(function (obj) {
+          // 찾아서 있으면 update. 요소를 찾아서 바로 업데이트 해줄 수 있다.
+          if (obj) return obj.update(values);
+          // 찾아서 없으면 insert.
+          return image.create(values);
+        });
+      }
 
-      for (let i = 0; i < imageUrls.length; i++) {
-        await image.update(
-          {
-            image_url: imageUrls[i],
-          },
-          {
-            where: {
-              contentId: contentId,
-              order: i + 1,
-            },
-          },
+      for (let i = 0; i < imageUrl.length; i++) {
+        let imageurl = imageUrl[i];
+        upsert(
+          { image_url: imageurl, contentId: contentId, order: i + 1 },
+          { contentId: contentId, order: i + 1 },
         );
       }
 
@@ -47,7 +51,7 @@ module.exports = {
       });
       const returnImages = async () => {
         let images = [];
-        for (let i = 0; i < imageUrls.length; i++) {
+        for (let i = 0; i < imageUrl.length; i++) {
           let imageurl = await image.findOne({
             where: { contentId: contentId, order: i + 1 },
             attributes: ['image_url'],
