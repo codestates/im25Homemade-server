@@ -34,6 +34,7 @@ module.exports = {
           where: { email: email },
         },
       );
+
       if (!isUpdated) {
         res.status(404).send('userinfo not found');
       }

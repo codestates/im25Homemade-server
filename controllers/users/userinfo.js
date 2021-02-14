@@ -11,6 +11,7 @@ module.exports = {
     } else if (accessTokenData) {
       const { email } = accessTokenData;
       const userInfo = await user.findOne({ where: { email } });
+
       if (!userInfo) {
         return res.status(401).send('access token has been tempered');
       }

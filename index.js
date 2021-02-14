@@ -12,7 +12,6 @@ const path = require('path');
 const AWS = require('aws-sdk');
 const multerS3 = require('multer-s3');
 const dotenv = require('dotenv');
-const { response } = require('express');
 dotenv.config();
 
 AWS.config.update({
@@ -41,15 +40,12 @@ app.use(
   cors({
     origin: true,
     credentials: true,
-
     methods: ['GET', 'POST', 'DELETE', 'PATCH', 'OPTIONS'],
   }),
 );
 
 sequelize
-
   .sync({ force: false, alter: true })
-
   .then(() => console.log('데이터베이스 연결 성공'))
   .catch(err => console.error(err));
 //force: true라면 서버 시작 시 테이블 재생성 (테이블 잘못 생성되었을 때, 개발 초기에 사용하자.)
@@ -83,7 +79,6 @@ app.post('/image', upload.array('imgs', 20), function (req, res) {
 
 app.post('/avatarimage', upload.single('img'), function async(req, res) {
   try {
-    console.log('req.file: ', req.file.location);
     res.status(200).json({ avatarUrl: req.file.location });
   } catch (err) {
     res.status(500).send('err');

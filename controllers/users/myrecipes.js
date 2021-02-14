@@ -14,6 +14,7 @@ module.exports = {
         attributes: ['id', 'title', 'thumbnail_url', 'createdAt'],
         where: { userId: id },
       });
+
       if (!myrecipes) {
         res.status(404).send('cannot find recipe');
       }

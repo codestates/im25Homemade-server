@@ -8,7 +8,6 @@ module.exports = {
   uuserinfo: require('./uuserinfo'),
   upassword: require('./upassword'),
   duser: require('./duser'),
-  socialsignin: require('./socialsignin'),
   myrecipes: require('./myrecipes'),
   checkemail: require('./checkemail'),
 };

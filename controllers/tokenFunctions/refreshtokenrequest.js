@@ -20,6 +20,7 @@ module.exports = {
     }
 
     const { email } = refreshTokenData;
+
     user
       .findOne({ where: { email } })
       .then(data => {

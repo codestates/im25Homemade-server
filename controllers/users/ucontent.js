@@ -12,8 +12,7 @@ module.exports = {
     } else if (accessTokenData) {
       const { contentId, imageUrls, title, contents, thumbnailUrl } = req.body;
 
-      //! content 업데이트(이미지 제외)
-      console.log('here is ucontent!!');
+      // content 업데이트(이미지 제외)
       const isUpdated = await content.update(
         {
           title: title,
@@ -25,7 +24,7 @@ module.exports = {
           where: { id: contentId },
         },
       );
-      //! image 업데이트
+      // image 업데이트
       function upsert(values, condition) {
         return image.findOne({ where: condition }).then(function (obj) {
           // 찾아서 있으면 update. 요소를 찾아서 바로 업데이트 해줄 수 있다.

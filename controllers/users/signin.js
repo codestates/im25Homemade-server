@@ -1,12 +1,10 @@
 const { user } = require('../../models');
-
 const {
   generateAccessToken,
   generateRefreshToken,
   sendRefreshToken,
   sendAccessToken,
 } = require('../tokenFunctions');
-
 const crypto = require('crypto');
 require('dotenv').config;
 

@@ -25,6 +25,7 @@ module.exports = {
               'sha512',
             )
             .toString('base64');
+
           return user.update(
             {
               password: encrypted,
@@ -65,6 +66,7 @@ module.exports = {
       const returnedUpdatedUserinfo = await user.findOne({
         where: { id: accessTokenData.id },
       });
+
       delete returnedUpdatedUserinfo.dataValues.password;
       return res.status(200).json({
         data: { userInfo: returnedUpdatedUserinfo.dataValues },

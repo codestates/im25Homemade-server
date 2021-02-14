@@ -15,9 +15,6 @@ router.post('/checkemail', usersController.checkemail.post);
 // * POST /users/signin 유저 로그인
 router.post('/signin', usersController.signin.post);
 
-// * POST /users/socialsignin 소셜 로그인
-router.post('/socialsignin', usersController.socialsignin.post);
-
 // * POST /users/signout 유저 로그아웃
 router.post('/signout', usersController.signout.post);
 

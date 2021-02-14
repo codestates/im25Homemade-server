@@ -11,28 +11,27 @@ module.exports = {
     } else {
       const userId = accessTokenData.id;
 
-      //지워야할 데이터? 1. 유저 2. 모든 컨텐츠 3. 모든 이미지 4. 모든 댓글
-      //! 1. 유저 데이터 삭제
+      // 1. 유저 데이터 삭제
       await user.destroy({
         where: { id: userId },
       });
-      // user.destroy => 삭제된 갯수를 return 한다. 즉, 찾으면 삭제한다.
+      //user.destroy => 삭제된 갯수를 return 한다. 즉, 찾으면 삭제한다.
 
       const findContents = await content.findAll({
         where: { userId: userId },
         attributes: ['id'],
       });
-      let contentIdArray = findContents.map(content => content.dataValues.id);
+      const contentIdArray = findContents.map(content => content.dataValues.id);
 
-      //! 2. 모든 이미지 삭제(content id 필요)
+      // 2. 모든 이미지 삭제(content id 필요)
       await image.destroy({
         where: { contentId: contentIdArray },
       });
-      //! 3. 모든 댓글 삭제(content id 필요)
+      // 3. 모든 댓글 삭제(content id 필요)
       await comment.destroy({
         where: { contentId: contentIdArray },
       });
-      //! 4. 마지막으로 모든 컨텐츠 데이터 삭제.
+      // 4. 마지막으로 모든 컨텐츠 데이터 삭제.
       await content.destroy({
         where: { userId: userId },
       });
