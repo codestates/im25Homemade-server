@@ -1,6 +1,6 @@
 ---
 name: "[Retrospect] First project 회고"
-about: Describe this issue template's purpose here.
+about: "[Retrospect] First project 회고 - 본인이름"
 title: ''
 labels: ''
 assignees: ''
